@@ -1,140 +1,120 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#    This file is part of EAP.
 #
+#    EAP is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Lesser General Public License as
+#    published by the Free Software Foundation, either version 3 of
+#    the License, or (at your option) any later version.
+#
+#    EAP is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#    GNU Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public
+#    License along with EAP. If not, see <http://www.gnu.org/licenses/>.
 
-'''
-Genetic Programming (GP) algorithm to evolve an equation for calculating the
-fundamental number of solutions to n for the n-Queens Problem.
-The following libraries need to be installed:
-py -3 -m pip install scoop
-py -3 -m pip install numpy
-py -3 -m pip install matplotlib
-py -3 -m pip install version_information
-py -3 -m pip install networkx
-'''
-
-__author__ = 'David Kind'
-__date__ = '14-03-2019'
-__version__ = '1.0'
-__copyright__ = 'Copyright (c) 2019'
-
-
-import os
-import sys
-import argparse
-import time                     # Use to time script execution.
-import numpy
-import random
 import operator
-import networkx as nx
-import matplotlib.pyplot as plt
-from deap import creator, base, tools, algorithms, gp
+import math
+import random
+
+import numpy
+
+from deap import algorithms
+from deap import base
+from deap import creator
+from deap import tools
+from deap import gp
+
+# TODO:
+#points = [1, 2, 1, 6, 12, 46, 92, 341, 1787, 9233, 45752, 285053, 1846955,
+#          11977939, 83263591, 621012754, 4878666808, 39333324973, 336376244042,
+#          3029242658210, 28439272956934, 275986683743434, 2789712466510289,
+#          29363495934315694]
+
+# Simple test integer sequence
+points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 
-# Main script defines
-SCRIPTNAME = os.path.basename(sys.argv[0])
-SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
+# Define new functions
+def protectedDiv(left, right):
+    try:
+        return left / right
+    except ZeroDivisionError:
+        return 1
 
-# Initialize Parity problem input and output matrices
-PARITY_FANIN_M = 6
-PARITY_SIZE_M = 2 ** PARITY_FANIN_M
 
-inputs = [None] * PARITY_SIZE_M
-outputs = [None] * PARITY_SIZE_M
+pset = gp.PrimitiveSet("MAIN", 1)
+pset.addPrimitive(operator.add, 2)
+pset.addPrimitive(operator.sub, 2)
+pset.addPrimitive(operator.mul, 2)
+pset.addPrimitive(protectedDiv, 2)
+pset.addPrimitive(operator.neg, 1)
+pset.addPrimitive(math.cos, 1)
+pset.addPrimitive(math.sin, 1)
+pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
+pset.renameArguments(ARG0='x')
 
-for i in range(PARITY_SIZE_M):
-    inputs[i] = [None] * PARITY_FANIN_M
-    value = i
-    dividor = PARITY_SIZE_M
-    parity = 1
-    for j in range(PARITY_FANIN_M):
-        dividor /= 2
-        if value >= dividor:
-            inputs[i][j] = 1
-            parity = int(not parity)
-            value -= dividor
-        else:
-            inputs[i][j] = 0
-    outputs[i] = parity
-
-pset = gp.PrimitiveSet("MAIN", PARITY_FANIN_M, "IN")
-pset.addPrimitive(operator.and_, 2)
-pset.addPrimitive(operator.or_, 2)
-pset.addPrimitive(operator.xor, 2)
-pset.addPrimitive(operator.not_, 1)
-pset.addTerminal(1)
-pset.addTerminal(0)
-
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
+creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMin)
 
 toolbox = base.Toolbox()
-toolbox.register("expr", gp.genFull, pset=pset, min_=3, max_=5)
-toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
+toolbox.register("individual", tools.initIterate, creator.Individual,
+                 toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
-def evalParity(individual):
-    func = toolbox.compile(expr=individual)
-    return sum(func(*in_) == out for in_, out in zip(inputs, outputs)),
 
-toolbox.register("evaluate", evalParity)
+def evalSymbReg(individual, points):
+    # Transform the tree expression in a callable function
+    func = toolbox.compile(expr=individual)
+    # Evaluate the mean squared error between the expression
+    # and the real function : x**4 + x**3 + x**2 + x
+    sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=4))
+    return math.fsum(sqerrors) / len(points),
+
+
+toolbox.register("evaluate", evalSymbReg, points=points)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
-toolbox.register("expr_mut", gp.genGrow, min_=0, max_=2)
+toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
+toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"),
+                                        max_value=17))
+toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"),
+                                          max_value=17))
+
+
 def main():
-    '''Main function'''
-    print('Running main function')
-    random.seed(21)
+    random.seed(318)
+
     pop = toolbox.population(n=300)
     hof = tools.HallOfFame(1)
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", numpy.mean)
-    stats.register("std", numpy.std)
-    stats.register("min", numpy.min)
-    stats.register("max", numpy.max)
 
-    algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 40, stats, halloffame=hof)
+    stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
+    stats_size = tools.Statistics(len)
+    mstats = tools.MultiStatistics(fitness=stats_fit, size=stats_size)
+    mstats.register("avg", numpy.mean)
+    mstats.register("std", numpy.std)
+    mstats.register("min", numpy.min)
+    mstats.register("max", numpy.max)
 
-    return pop, stats, hof
+    pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 40, stats=mstats,
+                                   halloffame=hof, verbose=True)
+
+    # Dump out the best individual
+    # Transform the tree expression in a callable function
+    func = toolbox.compile(expr=hof.items[0])
+    # Print out all values of n
+    #
+    values = [func(n) for n,_ in enumerate(points, start=4)]
+    print(", ".join(map(str, values)))
+
+# TODO: Need to print out if we've been successful or not.
+
+    return pop, log, hof
 
 
-if __name__ == '__main__':
-    START = time.time()        # Used to time script execution.
-    PARSER = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawTextHelpFormatter)
-    PARSER.add_argument('--version', action='version', version=SCRIPTINFO)
-    PARSER.add_argument('--timer', '-t',
-                        help='Script execution time.',
-                        action='store_true')
-    # Get the arguments dictionary, where arguments are the keys.
-    ARGS = vars(PARSER.parse_args())
-
-    # Start application
+if __name__ == "__main__":
     main()
-
-    # Display the individual
-#    expr = toolbox.individual()
-#    nodes, edges, labels = gp.graph(expr)
-#    g = nx.Graph()
-#    g.add_nodes_from(nodes)
-#    g.add_edges_from(edges)
-#    pos = nx.graphviz_layout(g, prog="dot")
-
-#    nx.draw_networkx_nodes(g, pos)
-#    nx.draw_networkx_edges(g, pos)
-#    nx.draw_networkx_labels(g, pos, labels)
-#    plt.show()
-
-# TODO: DEBUG only: remove me:
-    expr = toolbox.individual()
-    print(expr)
-# TODO: DEBUG only: remove me:
-
-    # Did user want to time the script?
-    if ARGS['timer']:
-        print("Script execution time:", time.time() - START, "seconds")
-
-# EOF

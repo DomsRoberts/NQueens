@@ -43,37 +43,35 @@ from deap import gp
 # can vary as the script will automatically adapt to the length.
 # Ref: Wikipedia List of OEIS Sequences
 # (https://en.wikipedia.org/wiki/List_of_OEIS_sequences)
-# > Natural Numbers
-points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-# > Square Numbers
-#points = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144]
-# > Prime Numbers
-#points = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
-# > Lucky Numbers
-#points = [3, 7, 13, 31, 37, 43, 67, 73, 79, 127, 151, 163]
-# > Cube Numbers
-#points = [0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728]
-# > Fermat Numbers (n >= 0)
-#points = [3, 5, 17, 257, 65537, 4294967297, 18446744073709551617]
-# > Semiprime Numbers
-#points = [4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34]
-# > Magic Numbers
-#points = [2, 8, 20, 28, 50, 82, 126]
-
-# > n-Queens Fundamental Sequence (n >= 4)
-#points = [1, 2, 1, 6, 12, 46, 92, 341, 1787, 9233, 45752, 285053, 1846955,
-#          11977939, 83263591, 621012754, 4878666808, 39333324973, 336376244042,
-#          3029242658210, 28439272956934, 275986683743434, 2789712466510289,
-#          29363495934315694]
-# > n-Queens Total Solutions Sequence (n >= 4)
-#points = [2, 10, 4, 40, 92, 352, 724, 2680, 14200, 73712, 365596, 2279184,
-#          14772512, 95815104, 666090624, 4968057848, 39029188884,
-#          314666222712, 2691008701644, 24233937684440, 227514171973736,
-#          2207893435808352, 22317699616364044, 234907967154122528]
+SEQUENCES = {"Natural":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+             "Square":[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144],
+             "Prime":[2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
+             "Lucky":[3, 7, 13, 31, 37, 43, 67, 73, 79, 127, 151, 163],
+             "Cube":[0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728],
+             "Fermat":[3, 5, 17, 257, 65537, 4294967297, 18446744073709551617],
+             "Semiprime":[4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34],
+             "Magic":[2, 8, 20, 28, 50, 82, 126],
+             "nQueensFundamental":[1, 2, 1, 6, 12, 46, 92, 341, 1787, 9233,
+                                   45752, 285053, 1846955, 11977939,
+                                   83263591, 621012754, 4878666808,
+                                   39333324973, 336376244042,
+                                   3029242658210, 28439272956934,
+                                   275986683743434, 2789712466510289,
+                                   29363495934315694],
+             "nQueensAll":[2, 10, 4, 40, 92, 352, 724, 2680, 14200, 73712,
+                           365596, 2279184, 14772512, 95815104, 666090624,
+                           4968057848, 39029188884, 314666222712,
+                           2691008701644, 24233937684440, 227514171973736,
+                           2207893435808352, 22317699616364044,
+                           234907967154122528]
+             }
 
 
 # Define new functions
 def protectedDiv(left, right):
+    '''
+    <TODO: docstring>
+    '''
     try:
         return left / right
     except ZeroDivisionError:
@@ -103,6 +101,9 @@ toolbox.register("compile", gp.compile, pset=pset)
 
 
 def evalSymbReg(individual, points):
+    '''
+    <TODO: docstring>
+    '''
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
     # Evaluate the mean squared error between the expression
@@ -110,7 +111,7 @@ def evalSymbReg(individual, points):
     sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=4))
     return math.fsum(sqerrors) / len(points),
 
-
+points = SEQUENCES["Natural"]
 toolbox.register("evaluate", evalSymbReg, points=points)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
@@ -149,7 +150,7 @@ def main():
     func = toolbox.compile(expr=hof.items[0])
     # Print out all values of n
     #
-    values = [func(n) for n,_ in enumerate(points, start=4)]
+    values = [func(n) for n, _ in enumerate(points, start=4)]
     print(", ".join(map(str, values)))
 
 # TODO: Need to print out if we've been successful or not.

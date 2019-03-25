@@ -107,82 +107,153 @@ def protected_divide(numerator, denominator):
     '''
     return numerator / denominator if denominator else 0
 
-
-
-pset = gp.PrimitiveSet("MAIN", 1)
-pset.addPrimitive(operator.add, 2)
-pset.addPrimitive(operator.sub, 2)
-pset.addPrimitive(operator.mul, 2)
-pset.addPrimitive(protected_divide, 2)
-pset.addPrimitive(operator.neg, 1)
-pset.addPrimitive(math.cos, 1)
-pset.addPrimitive(math.sin, 1)
-pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
-pset.renameArguments(ARG0='x')
-
-creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMin)
-
-toolbox = base.Toolbox()
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
-toolbox.register("individual", tools.initIterate, creator.Individual,
-                 toolbox.expr)
-toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-toolbox.register("compile", gp.compile, pset=pset)
-
-
-def evalSymbReg(individual, points):
+class CIntegerSequenceGp:
     '''
-    <TODO: docstring>
+    Integer sequence Genetic Program using the DEAP module library.
     '''
-    # Transform the tree expression in a callable function
-    func = toolbox.compile(expr=individual)
-    # Evaluate the mean squared error between the expression
-    # and the real function : x**4 + x**3 + x**2 + x
-    sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=4))
-    return math.fsum(sqerrors) / len(points),
+    def __init__(self, intseq, mterms, popsize, gens):
+        # Assign the Integer Sequence name and associated list contents
+        self.sname = intseq
+        self.slist = SEQUENCES[self.sname]
+        # Set object variables
+        self.maxterms = len(self.slist)
+        if self.maxterms > mterms:
+            self.maxterms = mterms
+        self.psize = popsize
+        self.generations = gens
 
-points = SEQUENCES["Natural"]
-toolbox.register("evaluate", evalSymbReg, points=points)
-toolbox.register("select", tools.selTournament, tournsize=3)
-toolbox.register("mate", gp.cxOnePoint)
-toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
-toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
+        # Initialise the primitive set with the required mathematical operations
+        self.pset = gp.PrimitiveSet("MAIN", 1)
+        self.pset.addPrimitive(operator.add, 2)
+        self.pset.addPrimitive(operator.sub, 2)
+        self.pset.addPrimitive(operator.mul, 2)
+        self.pset.addPrimitive(protected_divide, 2)
+        self.pset.addPrimitive(operator.neg, 1)
+        self.pset.addPrimitive(math.cos, 1)
+        self.pset.addPrimitive(math.sin, 1)
+        self.pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
+        self.pset.renameArguments(ARG0='x')   # TODO: Can I change this to 'n'?
 
-toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"),
-                                        max_value=17))
-toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"),
-                                          max_value=17))
+        # Configure the optimization to be for a minima
+        # This is done by creating a new class based on Fitness, but with a
+        # range from -1.0 to zero. We can then create a new Individual class
+        # based on the PrimitiveTree and inheriting from the FitnessMin class.
+        creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+        creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMin)
+        # Can now create the toolbox which contains everything required to run
+        # our GP.
+        self.toolbox = base.Toolbox()
+        self.toolbox.register("expr",
+                              gp.genHalfAndHalf, pset=self.pset, min_=1, max_=2)
+        self.toolbox.register("individual",
+                              tools.initIterate, creator.Individual,
+                              self.toolbox.expr)
+        self.toolbox.register("population",
+                              tools.initRepeat, list, self.toolbox.individual)
+        self.toolbox.register("compile", gp.compile, pset=self.pset)
+
+        self.toolbox.register("evaluate", self.eval_sequence, points=self.slist)
+        self.toolbox.register("select", tools.selTournament, tournsize=3)
+        self.toolbox.register("mate", gp.cxOnePoint)
+        self.toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
+        self.toolbox.register("mutate", gp.mutUniform,
+                              expr=self.toolbox.expr_mut, pset=self.pset)
+
+        self.toolbox.decorate("mate",
+                              gp.staticLimit(key=operator.attrgetter("height"),
+                              max_value=17))
+        self.toolbox.decorate("mutate",
+                              gp.staticLimit(key=operator.attrgetter("height"),
+                              max_value=17))
+
+    def eval_sequence(self, individual, points):
+        '''
+        <TODO: docstring>
+        Params:
+        individual  - individual object; individual to be tested.
+        points      - integer number list; terms to match.
+        '''
+        # Transform the tree expression in a callable function
+        func = self.toolbox.compile(expr=individual)
+        # Evaluate the mean squared error between the expression
+        # and the real function : x**4 + x**3 + x**2 + x
+# TODO: This currently only works if start==4; must've hardcoded 4 into the
+# script somewhere else; need to check and remove it.
+        sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=4))
+        return math.fsum(sqerrors) / len(points),
+
+    def set_population(self):
+        '''
+        <TODO: populate this field>
+        '''
+        self.pop = self.toolbox.population(n=self.psize)
+        self.hof = tools.HallOfFame(1)
+
+    def config_statistics(self):
+        '''
+        <TODO: populate this field>
+        '''
+        stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
+        stats_size = tools.Statistics(len)
+        self.mstats = tools.MultiStatistics(fitness=stats_fit, size=stats_size)
+        self.mstats.register("avg", numpy.mean)
+        self.mstats.register("std", numpy.std)
+        self.mstats.register("min", numpy.min)
+        self.mstats.register("max", numpy.max)
+
+    def execute_gp(self):
+        '''
+        <TODO: populate this field>
+        '''
+# TODO: Set up file constants for the mutation rates...
+# TODO: What exactly is being returned here?
+        pop, log = algorithms.eaSimple(self.pop, self.toolbox, 0.5, 0.1,
+                                       self.generations, verbose=True)
+
+    def show_results(self):
+        '''
+        <TODO: populate this field>
+        '''
+        if self.hof.items:
+            # Dump out the best individual
+            # Transform the tree expression in a callable function
+            func = self.toolbox.compile(expr=self.hof.items[0])
+            # Print out all values of n
+            #
+            values = [func(n) for n, _ in enumerate(self.slist, start=4)]
+            print("\nCalculated result: ",)
+            print(", ".join(map(str, values)))
+        else:
+            print("\nError: hof variable is emtpy.")
 
 
-def main():
+def main(sequence, maxterms, psize, generations):
     '''
     <TODO: Main function description>
+    Params:
+    sequence    - string key to SEQUENCE dictionary; Integer Sequence Key.
+    maxterms    - max integer number; terms to match from the sequence.
+    psize       - integer number; GP population size.
+    generations - integer number; number of generations to process.
     '''
+    # Initialise the random module and seed with the current time.
+    # Note: uses the current time by default if left empty.
+    random.seed()
 
-    random.seed(99)
+    # Create our Integer Sequence object and initialise it
+    isgp = CIntegerSequenceGp(sequence, maxterms, psize, generations)
 
-    pop = toolbox.population(n=300)
-    hof = tools.HallOfFame(1)
+    # Initialise the population to the previously specified size
+    isgp.set_population()
 
-    stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
-    stats_size = tools.Statistics(len)
-    mstats = tools.MultiStatistics(fitness=stats_fit, size=stats_size)
-    mstats.register("avg", numpy.mean)
-    mstats.register("std", numpy.std)
-    mstats.register("min", numpy.min)
-    mstats.register("max", numpy.max)
+    # Configure the statistics code
+    isgp.config_statistics()
 
-    pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 100, stats=mstats,
-                                   halloffame=hof, verbose=True)
+    # Now run the Genetic Program code
+    isgp.execute_gp()
 
-    # Dump out the best individual
-    # Transform the tree expression in a callable function
-    func = toolbox.compile(expr=hof.items[0])
-    # Print out all values of n
-    #
-    values = [func(n) for n, _ in enumerate(points, start=4)]
-    print(", ".join(map(str, values)))
+    # Show the results
+    isgp.show_results()
 
 # TODO: Need to print out if we've been successful or not.
 # TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
@@ -194,6 +265,10 @@ if __name__ == "__main__":
     start = time.time()        # Used to time script execution.
     PARSER = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawTextHelpFormatter)
+    PARSER.add_argument('sequence', nargs=1, help='Integer number sequence.')
+    PARSER.add_argument('maxterms', nargs=1, help='Maximum number of terms.')
+    PARSER.add_argument('psize', nargs=1, help='Population size.')
+    PARSER.add_argument('generations', nargs=1, help='Number of generations.')
     PARSER.add_argument('--version', action='version', version=SCRIPTINFO)
     PARSER.add_argument('--timer', '-t',
                         help='Script execution time.',
@@ -201,11 +276,39 @@ if __name__ == "__main__":
     # Get the arguments dictionary, where arguments are the keys.
     ARGS = vars(PARSER.parse_args())
 
+    params_ok = True
+    # Check the user input for the chosen Integer Sequence
+    seq = ARGS['sequence'][0]
+    if not seq in SEQUENCES.keys():
+        print("\nError: '{}' not a valid integer sequence.".format(seq))
+        print("\nValid Integer sequences are:")
+        print(", ".join(SEQUENCES.keys()))
+        params_ok = False
+    # Make sure the maximum number of terms to test for is an integer value.
+    # Assuming it requires more than one term to determine the integer sequence.
+    mterms = int(ARGS['maxterms'][0])
+    if mterms < 2:
+        print("\nError: maxterms must be greater than 1.")
+        params_ok = False
+    # Make sure the population size is an integer value and assuming the size
+    # is greater than 10.
+    population_size = int(ARGS['psize'][0])
+    if population_size < 10:
+        print("\nError: psize must be greater than 9.")
+        params_ok = False
+    # Make sure the generations parameter is an integer value and assuming the
+    # size is greater than 10.
+    gens = int(ARGS['generations'][0])
+    if gens < 10:
+        print("\nError: generations must be greater than 9.")
+        params_ok = False
+
     # Start up the application
-    main()
+    if params_ok:
+        main(seq, mterms, population_size, gens)
 
     # Are we on the timer?
     if ARGS['timer']:
-        print("Script execution time:", time.time() - start, "seconds")
+        print("\nScript execution time:", time.time() - start, "seconds")
 
 # EOF

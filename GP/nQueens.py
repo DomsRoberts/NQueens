@@ -98,21 +98,22 @@ SEQUENCES = {"Natural":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             }
 
 # Define new functions
-def protectedDiv(left, right):
+def protected_divide(numerator, denominator):
     '''
-    <TODO: docstring>
+    Protected division; protect against potential divide by zero errors.
+    Params:
+    numerator   - individual object; individual to be tested.
+    denominator - integer number list; terms to match.
     '''
-    try:
-        return left / right
-    except ZeroDivisionError:
-        return 1
+    return numerator / denominator if denominator else 0
+
 
 
 pset = gp.PrimitiveSet("MAIN", 1)
 pset.addPrimitive(operator.add, 2)
 pset.addPrimitive(operator.sub, 2)
 pset.addPrimitive(operator.mul, 2)
-pset.addPrimitive(protectedDiv, 2)
+pset.addPrimitive(protected_divide, 2)
 pset.addPrimitive(operator.neg, 1)
 pset.addPrimitive(math.cos, 1)
 pset.addPrimitive(math.sin, 1)

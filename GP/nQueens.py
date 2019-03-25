@@ -17,7 +17,24 @@
 #
 
 '''
-<TODO: Description of script function>.
+The n-Queens problem is an age old problem first published by Max Bezzel in 1848
+who first wrote about placing 8 Queens on an 8 x 8 chess board so that none of
+the Queens were able to attack each other. This problem was later extended to
+n-Queens on an n x n chessboard by Franz Nauck in 1850. While the concept may
+sound simple, the problem is prohibitively computationally expensive as n
+increases in size; where n >= 1 integer. The number of solutions to the n-Queens
+problem, fundamental and all solutions, are integer sequences. This Genetic
+Program attempts to solve the n-Queens integer sequences by inductively creating
+an equation using the tree method.
+
+Shell execution example: py -3 nQueens.py Natural 8 300 50
+Running the GP:
+    > against the Natural Number sequence;
+    > with a maximum number of 8 terms from the sequence to check;
+    > with a population of 300;
+    > over 50 generations
+
+Note: this script has been developed to use Python 3.
 '''
 
 import os
@@ -27,7 +44,6 @@ import argparse
 import operator
 import math
 import random
-
 import numpy
 
 from deap import algorithms
@@ -37,7 +53,7 @@ from deap import tools
 from deap import gp
 
 __author__ = 'David Kind'
-__date__ = '24-03-2019'
+__date__ = '25-03-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
@@ -79,8 +95,7 @@ SEQUENCES = {"Natural":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                            2691008701644, 24233937684440, 227514171973736,
                            2207893435808352, 22317699616364044,
                            234907967154122528]
-             }
-
+            }
 
 # Define new functions
 def protectedDiv(left, right):
@@ -171,14 +186,14 @@ def main():
 # TODO: Need to print out if we've been successful or not.
 # TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
 
-    return pop, log, hof
+# TODO:   return pop, log, hof
 
 
 if __name__ == "__main__":
     start = time.time()        # Used to time script execution.
     PARSER = argparse.ArgumentParser(description=__doc__,
-                                     version=SCRIPTINFO,
                                      formatter_class=argparse.RawTextHelpFormatter)
+    PARSER.add_argument('--version', action='version', version=SCRIPTINFO)
     PARSER.add_argument('--timer', '-t',
                         help='Script execution time.',
                         action='store_true')

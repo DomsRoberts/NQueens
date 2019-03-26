@@ -53,7 +53,7 @@ from deap import tools
 from deap import gp
 
 __author__ = 'David Kind'
-__date__ = '25-03-2019'
+__date__ = '26-03-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
@@ -62,6 +62,7 @@ __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 #
 SCRIPTNAME = os.path.basename(sys.argv[0])
 SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
+# TODO: Need some global defines for the mutation rate.
 
 # TODO: Is there an optimum number of values required to learn the integer
 #  sequence? Test min/max???
@@ -74,6 +75,7 @@ SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
 # can vary as the script will automatically adapt to the length.
 # Ref: Wikipedia List of OEIS Sequences
 # (https://en.wikipedia.org/wiki/List_of_OEIS_sequences)
+# TODO: Looks like you need to set the sequence start value of n!!!
 SEQUENCES = {"Natural":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
              "Square":[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144],
              "Prime":[2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
@@ -104,8 +106,14 @@ def protected_divide(numerator, denominator):
     Params:
     numerator   - individual object; individual to be tested.
     denominator - integer number list; terms to match.
+	Returns:
+	Division result or 0 if denominator is 0.
     '''
-    return numerator / denominator if denominator else 0
+    retval = 0
+    if denominator:
+        retval = numerator / denominator
+    return retval
+
 
 class CIntegerSequenceGp:
     '''
@@ -132,7 +140,7 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(math.cos, 1)
         self.pset.addPrimitive(math.sin, 1)
         self.pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
-        self.pset.renameArguments(ARG0='x')   # TODO: Can I change this to 'n'?
+        self.pset.renameArguments(ARG0='n')
 
         # Configure the optimization to be for a minima
         # This is done by creating a new class based on Fitness, but with a
@@ -176,10 +184,11 @@ class CIntegerSequenceGp:
         # Transform the tree expression in a callable function
         func = self.toolbox.compile(expr=individual)
         # Evaluate the mean squared error between the expression
-        # and the real function : x**4 + x**3 + x**2 + x
+	    # and the recorded Integer Sequence values.
 # TODO: This currently only works if start==4; must've hardcoded 4 into the
 # script somewhere else; need to check and remove it.
-        sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=4))
+# TODO: Looks like you need to set the sequence start value of n!!!
+        sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=1))
         return math.fsum(sqerrors) / len(points),
 
     def set_population(self):
@@ -208,7 +217,10 @@ class CIntegerSequenceGp:
 # TODO: Set up file constants for the mutation rates...
 # TODO: What exactly is being returned here?
         pop, log = algorithms.eaSimple(self.pop, self.toolbox, 0.5, 0.1,
-                                       self.generations, verbose=True)
+                                       self.generations,
+                                       stats=self.mstats,
+                                       halloffame=self.hof,
+                                       verbose=True)
 
     def show_results(self):
         '''
@@ -220,7 +232,8 @@ class CIntegerSequenceGp:
             func = self.toolbox.compile(expr=self.hof.items[0])
             # Print out all values of n
             #
-            values = [func(n) for n, _ in enumerate(self.slist, start=4)]
+# TODO: Looks like you need to set the sequence start value of n!!!
+            values = [func(n) for n, _ in enumerate(self.slist, start=1)]
             print("\nCalculated result: ",)
             print(", ".join(map(str, values)))
         else:
@@ -229,7 +242,8 @@ class CIntegerSequenceGp:
 
 def main(sequence, maxterms, psize, generations):
     '''
-    <TODO: Main function description>
+    Execute the DEAP GP on the specified Integer Sequence for the specified
+    population size and for the specified number of generations.
     Params:
     sequence    - string key to SEQUENCE dictionary; Integer Sequence Key.
     maxterms    - max integer number; terms to match from the sequence.

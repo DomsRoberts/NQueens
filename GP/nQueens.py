@@ -62,7 +62,11 @@ __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 #
 SCRIPTNAME = os.path.basename(sys.argv[0])
 SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
-# TODO: Need some global defines for the mutation rate.
+
+# GP specific definitions
+MUTATION_RATE = 0.1     # Probability of mutating an individual (%)
+MATING_RATE = 0.5       # Probability of mating two individuals (%)
+NSTART_VAL = 4          # Starting value of 'n' the Integer Sequence index.
 
 # TODO: Is there an optimum number of values required to learn the integer
 #  sequence? Test min/max???
@@ -76,24 +80,25 @@ SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
 # Ref: Wikipedia List of OEIS Sequences
 # (https://en.wikipedia.org/wiki/List_of_OEIS_sequences)
 # TODO: Looks like you need to set the sequence start value of n!!!
-SEQUENCES = {"Natural":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-             "Square":[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144],
-             "Prime":[2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
-             "Lucky":[3, 7, 13, 31, 37, 43, 67, 73, 79, 127, 151, 163],
-             "Cube":[0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728],
-             "Fermat":[3, 5, 17, 257, 65537, 4294967297, 18446744073709551617],
-             "Semiprime":[4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34],
-             "Magic":[2, 8, 20, 28, 50, 82, 126],
-             "nQueensFundamental":[1, 2, 1, 6, 12, 46, 92, 341, 1787, 9233,
-                                   45752, 285053, 1846955, 11977939,
+# OEIS Offsets => n
+SEQUENCES = {"Natural":[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], # n=1
+             "Square":[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144], #n=0
+             "Prime":[2, 3, 5, 7, 11, 13, 17, 19, 23, 29], # n=1
+             "Lucky":[1, 3, 7, 13, 31, 37, 43, 67, 73, 79, 127, 151, 163],
+             "Cube":[0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728], # n=0
+             "Fermat":[3, 5, 17, 257, 65537, 4294967297, 18446744073709551617], # n=0
+             "Semiprime":[4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34], # n=1
+             "Magic":[2, 8, 20, 28, 50, 82, 126], # n=1
+             "nQueensFundamental":[1, 0, 0, 1, 2, 1, 6, 12, 46, 92, 341, 1787, #n=1 (A002562)
+                                   9233, 45752, 285053, 1846955, 11977939,
                                    83263591, 621012754, 4878666808,
                                    39333324973, 336376244042,
                                    3029242658210, 28439272956934,
                                    275986683743434, 2789712466510289,
                                    29363495934315694],
-             "nQueensAll":[2, 10, 4, 40, 92, 352, 724, 2680, 14200, 73712,
-                           365596, 2279184, 14772512, 95815104, 666090624,
-                           4968057848, 39029188884, 314666222712,
+             "nQueensAll":[1, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200, #n=0 (A000170)
+                           73712, 365596, 2279184, 14772512, 95815104,
+                           666090624, 4968057848, 39029188884, 314666222712,
                            2691008701644, 24233937684440, 227514171973736,
                            2207893435808352, 22317699616364044,
                            234907967154122528]
@@ -195,10 +200,7 @@ class CIntegerSequenceGp:
         func = self.toolbox.compile(expr=individual)
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
-# TODO: This currently only works if start==4; must've hardcoded 4 into the
-# script somewhere else; need to check and remove it.
-# TODO: Looks like you need to set the sequence start value of n!!!
-        sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=1))
+        sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=NSTART_VAL))
         return math.fsum(sqerrors) / len(points),
 
     def set_population(self):
@@ -226,7 +228,8 @@ class CIntegerSequenceGp:
         '''
 # TODO: Set up file constants for the mutation rates...
 # TODO: What exactly is being returned here?
-        pop, log = algorithms.eaSimple(self.pop, self.toolbox, 0.5, 0.1,
+        pop, log = algorithms.eaSimple(self.pop, self.toolbox,
+                                       MATING_RATE, MUTATION_RATE,
                                        self.generations,
                                        stats=self.mstats,
                                        halloffame=self.hof,
@@ -243,10 +246,24 @@ class CIntegerSequenceGp:
             func = self.toolbox.compile(expr=self.hof.items[0])
             # Print out all values of n
             #
-# TODO: Looks like you need to set the sequence start value of n!!!
-            values = [func(n) for n, _ in enumerate(self.slist, start=1)]
+            values = [func(n) for n, _ in enumerate(self.slist, start=NSTART_VAL)]
             print("\nCalculated result: ",)
             print(", ".join(map(str, values)))
+# TODO: was it successful? - check entire range as well...
+            # Display the individual
+# TODO: Display the best individual => graph and equation.
+#            expr = toolbox.individual()
+#            nodes, edges, labels = gp.graph(expr)
+#            g = nx.Graph()
+#            g.add_nodes_from(nodes)
+#            g.add_edges_from(edges)
+#            pos = nx.graphviz_layout(g, prog="dot")
+
+#            nx.draw_networkx_nodes(g, pos)
+#            nx.draw_networkx_edges(g, pos)
+#            nx.draw_networkx_labels(g, pos, labels)
+#            plt.show()
+
         else:
             print("\nError: hof variable is emtpy.")
 

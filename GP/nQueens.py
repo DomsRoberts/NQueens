@@ -131,7 +131,10 @@ class CIntegerSequenceGp:
         self.generations = gens
 
         # Initialise the primitive set with the required mathematical operations
+        # We only have one input: ARG0, which represents 'n'. The number of
+        # inputs is specified by the second argument in the PrimitiveSet.
         self.pset = gp.PrimitiveSet("MAIN", 1)
+        # Can now add the primitive operators
         self.pset.addPrimitive(operator.add, 2)
         self.pset.addPrimitive(operator.sub, 2)
         self.pset.addPrimitive(operator.mul, 2)
@@ -139,7 +142,14 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.neg, 1)
         self.pset.addPrimitive(math.cos, 1)
         self.pset.addPrimitive(math.sin, 1)
+        # Ref: DEAP 1.2.2 Documentation on Genetic Programming
+        # An ephemeral constant is a terminal encapsulating a value that is
+        # generated from a given function at run time. The ephemeral constant
+        # value is determined when it is inserted in the tree and never
+        # changes unless it is replaced by another ephemeral constant.
         self.pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
+        # We only have one input argument 'n' indexing the current integer in
+        # the sequence.
         self.pset.renameArguments(ARG0='n')
 
         # Configure the optimization to be for a minima
@@ -212,7 +222,7 @@ class CIntegerSequenceGp:
 
     def execute_gp(self):
         '''
-        <TODO: populate this field>
+        Execute the DEAP GP according to the specified configuration.
         '''
 # TODO: Set up file constants for the mutation rates...
 # TODO: What exactly is being returned here?
@@ -221,6 +231,7 @@ class CIntegerSequenceGp:
                                        stats=self.mstats,
                                        halloffame=self.hof,
                                        verbose=True)
+# TODO:   return pop, log, hof
 
     def show_results(self):
         '''
@@ -271,8 +282,6 @@ def main(sequence, maxterms, psize, generations):
 
 # TODO: Need to print out if we've been successful or not.
 # TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
-
-# TODO:   return pop, log, hof
 
 
 if __name__ == "__main__":

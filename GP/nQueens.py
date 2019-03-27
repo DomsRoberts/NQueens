@@ -160,10 +160,13 @@ class CIntegerSequenceGp:
             self.maxterms = mterms
         self.psize = popsize
         self.generations = gens
+# TODO: Split the initialisation into sub-functions for ease of use.
 
         # Initialise the primitive set with the required mathematical operations
         # We only have one input: ARG0, which represents 'n'. The number of
         # inputs is specified by the second argument in the PrimitiveSet.
+# TODO: Example script adf_symbreg.py shows how you can specify different
+#       primitive sets and then cycle through them for test purposes.
         self.pset = gp.PrimitiveSet("MAIN", 1)
         # Can now add the primitive operators
         self.pset.addPrimitive(operator.add, 2)
@@ -173,6 +176,10 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.neg, 1)
         self.pset.addPrimitive(math.cos, 1)
         self.pset.addPrimitive(math.sin, 1)
+# TODO: More examples: will need to define the handling conditional function
+# pset.addPrimitive(if_then_else, 3)
+# pset.addTerminal(1)
+# pset.addTerminal(0)
         # Ref: DEAP 1.2.2 Documentation on Genetic Programming
         # An ephemeral constant is a terminal encapsulating a value that is
         # generated from a given function at run time. The ephemeral constant
@@ -260,6 +267,16 @@ class CIntegerSequenceGp:
                                        stats=self.mstats,
                                        halloffame=self.hof,
                                        verbose=True)
+# TODO: NEED TO INVESTIGATE THESE OTHER METHODS...
+#        pop, log = gp.harm(pop, toolbox,
+#                           MATING_RATE, MUTATION_RATE,
+#                           self.generations,
+#                           alpha=0.05, beta=10,
+#                           gamma=0.25, rho=0.9,
+#                           stats=self.mstats,
+#                           halloffame=self.hof,
+#                           verbose=True)
+
 # TODO:   return pop, log, hof
 
     def show_results(self):
@@ -289,6 +306,9 @@ class CIntegerSequenceGp:
 #            nx.draw_networkx_edges(g, pos)
 #            nx.draw_networkx_labels(g, pos, labels)
 #            plt.show()
+
+# TODO: Want to dump out the actual resultant expression for the best individual
+            print('Best individual : ', self.hof[0][0], self.hof[0].fitness)
 
         else:
             print("\nError: hof variable is emtpy.")

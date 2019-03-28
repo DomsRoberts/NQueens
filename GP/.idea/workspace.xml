@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f229926-ded5-4b60-8c1b-da802ea2b79d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nQueens.py" beforeDir="false" afterPath="$PROJECT_DIR$/nQueens.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nQueens.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="347" selection-start-line="347" selection-end-line="347" />
+            <state relative-caret-position="853">
+              <caret line="378" column="64" selection-start-line="378" selection-start-column="64" selection-end-line="378" selection-end-column="64" />
               <folding>
                 <element signature="e#1572#1581#0" expanded="true" />
               </folding>
@@ -86,7 +85,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="85" />
     <option name="width" value="1825" />
     <option name="height" value="1040" />
@@ -272,8 +271,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nQueens.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="347" selection-start-line="347" selection-end-line="347" />
+        <state relative-caret-position="853">
+          <caret line="378" column="64" selection-start-line="378" selection-start-column="64" selection-end-line="378" selection-end-column="64" />
           <folding>
             <element signature="e#1572#1581#0" expanded="true" />
           </folding>

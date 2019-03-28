@@ -347,33 +347,36 @@ class CIntegerSequenceGp:
 # TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
 ### TODO: Get this code up and running again; Windows / Linux check?!
 #            nodes, edges, labels = gp.graph(expr)
+            if sys.platform == 'linux' or sys.platform == 'linux2':
+                print("Running on Linux OS.")
+                ### Graphviz Section ###
+#               import pygraphviz as pgv
 
-            ### Graphviz Section ###
-#            import pygraphviz as pgv
+#               g = pgv.AGraph()
+#               g.add_nodes_from(nodes)
+#               g.add_edges_from(edges)
+#               g.layout(prog="dot")
 
-#            g = pgv.AGraph()
-#            g.add_nodes_from(nodes)
-#            g.add_edges_from(edges)
-#            g.layout(prog="dot")
+#               for i in nodes:
+#                   n = g.get_node(i)
+#                   n.attr["label"] = labels[i]
 
-#            for i in nodes:
-#                n = g.get_node(i)
-#                n.attr["label"] = labels[i]
-
-#            g.draw("tree.pdf")
+#               g.draw("tree.pdf")
 ###########################################################
-#            import matplotlib.pyplot as plt
-#            import networkx as nx
+#               import matplotlib.pyplot as plt
+#               import networkx as nx
 
-#            g = nx.Graph()
-#            g.add_nodes_from(nodes)
-#            g.add_edges_from(edges)
-#            pos = nx.graphviz_layout(g, prog="dot")
+#               g = nx.Graph()
+#               g.add_nodes_from(nodes)
+#               g.add_edges_from(edges)
+#               pos = nx.graphviz_layout(g, prog="dot")
 
-#            nx.draw_networkx_nodes(g, pos)
-#            nx.draw_networkx_edges(g, pos)
-#            nx.draw_networkx_labels(g, pos, labels)
-#            plt.show()
+#               nx.draw_networkx_nodes(g, pos)
+#               nx.draw_networkx_edges(g, pos)
+#               nx.draw_networkx_labels(g, pos, labels)
+#               plt.show()
+            else:
+                print("Graphical output only available on Linux.")
         else:
             print("\nError: hof variable is emtpy.")
 

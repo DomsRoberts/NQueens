@@ -162,9 +162,16 @@ class CIntegerSequenceGp:
         self.generations = gens
 # TODO: Split the initialisation into sub-functions for ease of use.
 
-        # Initialise the primitive set with the required mathematical operations
-        # We only have one input: ARG0, which represents 'n'. The number of
-        # inputs is specified by the second argument in the PrimitiveSet.
+    def configure_primitives(self):
+        '''
+        Initialise the primitive set with the required mathematical operations
+        We only have one input: ARG0, which represents 'n'. The number of
+        inputs is specified by the second argument in the PrimitiveSet.
+        Params:
+            N/A
+        Returns:
+            N/A
+        '''
 # TODO: Example script adf_symbreg.py shows how you can specify different
 #       primitive sets and then cycle through them for test purposes.
         self.pset = gp.PrimitiveSet("MAIN", 1)
@@ -190,6 +197,14 @@ class CIntegerSequenceGp:
         # the sequence.
         self.pset.renameArguments(ARG0='n')
 
+    def configure_toolbox(self):
+        '''
+        Initialise the fitness optimization method and the toolbox.
+        Params:
+            N/A
+        Returns:
+            N/A
+        '''
         # Configure the optimization to be for a minima
         # This is done by creating a new class based on Fitness, but with a
         # range from -1.0 to zero. We can then create a new Individual class
@@ -224,13 +239,17 @@ class CIntegerSequenceGp:
 
     def eval_sequence(self, individual, points):
         '''
-        <TODO: docstring>
+        Evaluate the individual's tree function on the values of 'n' and
+        report the mean squared error of doing so.
         Params:
-        individual  - individual object; individual to be tested.
-        points      - integer number list; terms to match.
+            individual  - individual object; individual to be tested.
+            points      - integer number list; terms to match.
+        Returns:
+            Sum of the mean squared error to the required values of 'n'.
         '''
         # Transform the tree expression in a callable function
         func = self.toolbox.compile(expr=individual)
+# TODO: Limit the number of points in the list to the command line specified value.
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
@@ -238,14 +257,23 @@ class CIntegerSequenceGp:
 
     def set_population(self):
         '''
-        <TODO: populate this field>
+        Set up the DEAP toolbox population size and create the hall of fame
+        object so that the best performing individuals can be recorded.
+        Params:
+            N/A
+        Returns:
+            N/A
         '''
         self.pop = self.toolbox.population(n=self.psize)
         self.hof = tools.HallOfFame(1)
 
     def config_statistics(self):
         '''
-        <TODO: populate this field>
+        Registers the statistics object and the required metrics.
+        Params:
+            N/A
+        Returns:
+            N/A
         '''
         stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
         stats_size = tools.Statistics(len)
@@ -258,6 +286,10 @@ class CIntegerSequenceGp:
     def execute_gp(self):
         '''
         Execute the DEAP GP according to the specified configuration.
+        Params:
+            N/A
+        Returns:
+            N/A
         '''
 # TODO: Set up file constants for the mutation rates...
 # TODO: What exactly is being returned here?
@@ -281,7 +313,12 @@ class CIntegerSequenceGp:
 
     def show_results(self):
         '''
-        <TODO: populate this field>
+        Display the results of executing the DEAP GP object; best individual
+        is displayed.
+        Params:
+            N/A
+        Returns:
+            N/A
         '''
         if self.hof.items:
             # Dump out the best individual
@@ -319,10 +356,12 @@ def main(sequence, maxterms, psize, generations):
     Execute the DEAP GP on the specified Integer Sequence for the specified
     population size and for the specified number of generations.
     Params:
-    sequence    - string key to SEQUENCE dictionary; Integer Sequence Key.
-    maxterms    - max integer number; terms to match from the sequence.
-    psize       - integer number; GP population size.
-    generations - integer number; number of generations to process.
+        sequence    - string key to SEQUENCE dictionary; Integer Sequence Key.
+        maxterms    - max integer number; terms to match from the sequence.
+        psize       - integer number; GP population size.
+        generations - integer number; number of generations to process.
+    Returns:
+        N/A
     '''
     # Initialise the random module and seed with the current time.
     # Note: uses the current time by default if left empty.
@@ -331,10 +370,10 @@ def main(sequence, maxterms, psize, generations):
     # Create our Integer Sequence object and initialise it
     isgp = CIntegerSequenceGp(sequence, maxterms, psize, generations)
 
-    # Initialise the population to the previously specified size
+    # Configure the DEAP GP objects
+    isgp.configure_primitives()
+    isgp.configure_toolbox()
     isgp.set_population()
-
-    # Configure the statistics code
     isgp.config_statistics()
 
     # Now run the Genetic Program code

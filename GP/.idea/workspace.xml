@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nQueens.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="309" column="80" selection-start-line="309" selection-start-column="80" selection-end-line="309" selection-end-column="80" />
+            <state relative-caret-position="500">
+              <caret line="378" selection-start-line="378" selection-end-line="378" />
               <folding>
                 <element signature="e#1572#1581#0" expanded="true" />
               </folding>
@@ -54,6 +54,7 @@
       <find>HallOfFame</find>
       <find>start</find>
       <find>sname</find>
+      <find>TODO:</find>
     </findStrings>
     <replaceStrings>
       <replace>eval_sequence</replace>
@@ -75,7 +76,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="85" />
     <option name="width" value="1825" />
     <option name="height" value="1040" />
@@ -152,7 +153,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1928" height="1060" extended-state="7" />
+    <frame x="-4" y="-4" width="1928" height="1060" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24907847" />
@@ -254,8 +255,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nQueens.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="309" column="80" selection-start-line="309" selection-start-column="80" selection-end-line="309" selection-end-column="80" />
+        <state relative-caret-position="500">
+          <caret line="378" selection-start-line="378" selection-end-line="378" />
           <folding>
             <element signature="e#1572#1581#0" expanded="true" />
           </folding>

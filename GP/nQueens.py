@@ -53,7 +53,7 @@ from deap import tools
 from deap import gp
 
 __author__ = 'David Kind'
-__date__ = '26-03-2019'
+__date__ = '27-03-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
@@ -133,10 +133,10 @@ def protected_divide(numerator, denominator):
     '''
     Protected division; protect against potential divide by zero errors.
     Params:
-    numerator   - individual object; individual to be tested.
-    denominator - integer number list; terms to match.
+        numerator   - individual object; individual to be tested.
+        denominator - integer number list; terms to match.
 	Returns:
-	Division result or 0 if denominator is 0.
+    	Division result or 0 if denominator is 0.
     '''
     retval = 0
     if denominator:
@@ -154,13 +154,9 @@ class CIntegerSequenceGp:
         self.sname = intseq
         self.start = SEQUENCES[self.sname][0]
         self.slist = SEQUENCES[self.sname][1]
-        # Set object variables
-        self.maxterms = len(self.slist)
-        if self.maxterms > mterms:
-            self.maxterms = mterms
+        self.maxterms = mterms
         self.psize = popsize
         self.generations = gens
-# TODO: Split the initialisation into sub-functions for ease of use.
 
     def configure_primitives(self):
         '''
@@ -222,8 +218,13 @@ class CIntegerSequenceGp:
         self.toolbox.register("population",
                               tools.initRepeat, list, self.toolbox.individual)
         self.toolbox.register("compile", gp.compile, pset=self.pset)
-
-        self.toolbox.register("evaluate", self.eval_sequence, points=self.slist)
+        # Limit number of points in the list to command line specified value.
+        # This is done so that we can characterise the GP performance depending
+        # on list length and also to enable us to reduce overall processing
+        # time by not processing all the terms. The final solution should be
+        # evaluated against all the terms in the sequence list.
+        points = self.slist[:self.maxterms]
+        self.toolbox.register("evaluate", self.eval_sequence, points=points)
         self.toolbox.register("select", tools.selTournament, tournsize=3)
         self.toolbox.register("mate", gp.cxOnePoint)
         self.toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
@@ -249,7 +250,6 @@ class CIntegerSequenceGp:
         '''
         # Transform the tree expression in a callable function
         func = self.toolbox.compile(expr=individual)
-# TODO: Limit the number of points in the list to the command line specified value.
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
@@ -323,17 +323,48 @@ class CIntegerSequenceGp:
         if self.hof.items:
             # Dump out the best individual
             # Transform the tree expression in a callable function
-            func = self.toolbox.compile(expr=self.hof.items[0])
+            expr = self.hof.items[0]
+            func = self.toolbox.compile(expr=expr)
             # Print out all values of n
             #
             values = [func(n) for n, _ in enumerate(self.slist, start=self.start)]
             print("\nCalculated result: ",)
             print(", ".join(map(str, values)))
-# TODO: was it successful? - check entire range as well...
+            # Was it successful?
+# TODO: How do I go about logging this result information and dumping it to a
+#  file??!?!?!
+            if values == self.slist:
+                print("Successfully calculates the Integer Sequence.")
+            else:
+                print("Unsuccessfull in calculating the Integer Sequence.")
             # Display the individual
+            print('Best individual : ', expr)
+            # Display the resultant equation from the best individual
+            tree = gp.PrimitiveTree(expr)
+            str(tree)
 # TODO: Display the best individual => graph and equation.
-#            expr = toolbox.individual()
+# TODO: Need to print out if we've been successful or not.
+# TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
+### TODO: Get this code up and running again; Windows / Linux check?!
 #            nodes, edges, labels = gp.graph(expr)
+
+            ### Graphviz Section ###
+#            import pygraphviz as pgv
+
+#            g = pgv.AGraph()
+#            g.add_nodes_from(nodes)
+#            g.add_edges_from(edges)
+#            g.layout(prog="dot")
+
+#            for i in nodes:
+#                n = g.get_node(i)
+#                n.attr["label"] = labels[i]
+
+#            g.draw("tree.pdf")
+###########################################################
+#            import matplotlib.pyplot as plt
+#            import networkx as nx
+
 #            g = nx.Graph()
 #            g.add_nodes_from(nodes)
 #            g.add_edges_from(edges)
@@ -343,10 +374,6 @@ class CIntegerSequenceGp:
 #            nx.draw_networkx_edges(g, pos)
 #            nx.draw_networkx_labels(g, pos, labels)
 #            plt.show()
-
-# TODO: Want to dump out the actual resultant expression for the best individual
-            print('Best individual : ', self.hof[0][0], self.hof[0].fitness)
-
         else:
             print("\nError: hof variable is emtpy.")
 
@@ -381,9 +408,6 @@ def main(sequence, maxterms, psize, generations):
 
     # Show the results
     isgp.show_results()
-
-# TODO: Need to print out if we've been successful or not.
-# TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
 
 
 if __name__ == "__main__":

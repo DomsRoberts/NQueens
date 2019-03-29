@@ -53,7 +53,7 @@ from deap import tools
 from deap import gp
 
 __author__ = 'David Kind'
-__date__ = '27-03-2019'
+__date__ = '28-03-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
@@ -69,8 +69,6 @@ MATING_RATE = 0.5       # Probability of mating two individuals (%)
 
 # TODO: Is there an optimum number of values required to learn the integer
 #  sequence? Test min/max???
-#  Note: Have to watch that numbers don't get too large
-#  and overflow the variable type size.
 
 # Defined Integer Sequences (Test cases)
 # Note these sequences are usually infinite so a limited number only have been
@@ -84,6 +82,8 @@ MATING_RATE = 0.5       # Probability of mating two individuals (%)
 #       value:
 #               [0]: OEIS Offset 'n'
 #               [1]: Number sequence list of varying length
+#  Note: Have to watch that numbers don't get too large and overflow the
+#  variable type size.
 SEQUENCES = {
             # Natural numbers; n=1 (https://oeis.org/A000027)
             "Natural":[1,

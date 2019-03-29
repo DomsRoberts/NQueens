@@ -266,6 +266,8 @@ class CIntegerSequenceGp:
         '''
         self.pop = self.toolbox.population(n=self.psize)
         self.hof = tools.HallOfFame(1)
+        self.log = None
+        self.rlist = None
 
     def config_statistics(self):
         '''
@@ -286,13 +288,13 @@ class CIntegerSequenceGp:
     def execute_gp(self):
         '''
         Execute the DEAP GP according to the specified configuration.
+        Running the algorithm results in it returning an optimised population
+        and the statistics log for each generation.
         Params:
             N/A
         Returns:
             N/A
         '''
-# TODO: Set up file constants for the mutation rates...
-# TODO: What exactly is being returned here?
         pop, log = algorithms.eaSimple(self.pop, self.toolbox,
                                        MATING_RATE, MUTATION_RATE,
                                        self.generations,
@@ -308,8 +310,18 @@ class CIntegerSequenceGp:
 #                           stats=self.mstats,
 #                           halloffame=self.hof,
 #                           verbose=True)
-
-# TODO:   return pop, log, hof
+        # Was the DEAP GP successful?
+        if self.hof.items:
+            # Transform the tree expression in a callable function
+            self.expr = self.hof.items[0]
+            func = self.toolbox.compile(expr=self.expr)
+            self.rlist = [func(n) for n, _ in enumerate(self.slist,
+                                                        start=self.start)]
+        else:
+            self.rlist = None
+            self.expr = None
+        self.pop = pop
+        self.log = log
 
     def show_results(self):
         '''
@@ -320,28 +332,21 @@ class CIntegerSequenceGp:
         Returns:
             N/A
         '''
-        if self.hof.items:
-            # Dump out the best individual
-            # Transform the tree expression in a callable function
-            expr = self.hof.items[0]
-            func = self.toolbox.compile(expr=expr)
-            # Print out all values of n
-            #
-            values = [func(n) for n, _ in enumerate(self.slist, start=self.start)]
-            print("\nCalculated result: ",)
-            print(", ".join(map(str, values)))
-            # Was it successful?
-# TODO: How do I go about logging this result information and dumping it to a
-#  file??!?!?!
-            if values == self.slist:
-                print("Successfully calculates the Integer Sequence.")
+        if self.rlist:
+            # Show the resultant integer sequence
+            result = ", ".join(map(str, self.rlist))
+            print("\nCalculated result: {}".format(result))
+            # Let the user know how it went.
+            if self.rlist == self.slist:
+                print("Successfully calculated the Integer Sequence.")
             else:
                 print("Unsuccessfull in calculating the Integer Sequence.")
             # Display the individual
-            print('Best individual : ', expr)
+            print('\nBest individual : ', self.expr)
             # Display the resultant equation from the best individual
-            tree = gp.PrimitiveTree(expr)
+            tree = gp.PrimitiveTree(self.expr)
             str(tree)
+
 # TODO: Display the best individual => graph and equation.
 # TODO: Need to print out if we've been successful or not.
 # TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
@@ -380,6 +385,37 @@ class CIntegerSequenceGp:
         else:
             print("\nError: hof variable is emtpy.")
 
+    def save_results(self, fname):
+        '''
+        Save the results of running the DEAP GP to a text file.
+        Params:
+            fname - string of the filename.
+        Returns:
+            N/A
+        '''
+        if self.rlist:
+            print("Writing results file: {}".format(fname))
+            with open(fname, "w") as fout:
+                fout.writelines(str(self.log))
+                best = "\n" + "-" * 80 + "\n"
+                best += "\nBest individual:"
+                seqstr = ", ".join(map(str, self.slist))
+                best += "\nRequired sequence: {}".format(seqstr)
+                seqstr = ", ".join(map(str, self.rlist))
+                best += "\nActual sequence:   {}".format(seqstr)
+                best += "\n\n"
+                # Display the resultant equation from the best individual
+                tree = gp.PrimitiveTree(self.expr)
+                best += "\nBest algorithm: {}".format(str(tree))
+                # Report whether the individual is a success or not.
+                if self.slist == self.rlist:
+                    best += "\n\nSuccess!"
+                else:
+                    best += "\n\nFailed!"
+                fout.writelines(best)
+        else:
+            print("No results available to write to file.")
+
 
 def main(sequence, maxterms, psize, generations):
     '''
@@ -411,6 +447,10 @@ def main(sequence, maxterms, psize, generations):
 
     # Show the results
     isgp.show_results()
+    # Save the results
+    results_filename = "results-{}_{}_{}_{}.txt" \
+                       .format(sequence, maxterms, psize, generations)
+    isgp.save_results(results_filename)
 
 
 if __name__ == "__main__":

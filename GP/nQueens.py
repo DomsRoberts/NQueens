@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2019 David Kind
@@ -27,12 +28,21 @@ problem, fundamental and all solutions, are integer sequences. This Genetic
 Program attempts to solve the n-Queens integer sequences by inductively creating
 an equation using the tree method.
 
-Shell execution example: py -3 nQueens.py Natural 8 300 50
+Shell execution examples:
+    py -3 nQueens.py Natural 8 300 50
 Running the GP:
     > against the Natural Number sequence;
     > with a maximum number of 8 terms from the sequence to check;
     > with a population of 300;
     > over 50 generations
+
+    py -3 nQueens.py Prime 8 300 50 --round
+Running the GP:
+    > against the Prime Number sequence;
+    > with a maximum number of 8 terms from the sequence to check;
+    > with a population of 300;
+    > over 50 generations
+    > rounding the resultant number sequence
 
 Note: this script has been developed to use Python 3.
 '''
@@ -51,9 +61,13 @@ from deap import base
 from deap import creator
 from deap import tools
 from deap import gp
+# libraries required for the tree diagrams (Linux)
+import matplotlib.pyplot as plt
+import networkx as nx
+from networkx.drawing.nx_agraph import graphviz_layout
 
 __author__ = 'David Kind'
-__date__ = '28-03-2019'
+__date__ = '30-03-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
@@ -66,9 +80,6 @@ SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
 # GP specific definitions
 MUTATION_RATE = 0.1     # Probability of mutating an individual (%)
 MATING_RATE = 0.5       # Probability of mating two individuals (%)
-
-# TODO: Is there an optimum number of values required to learn the integer
-#  sequence? Test min/max???
 
 # Defined Integer Sequences (Test cases)
 # Note these sequences are usually infinite so a limited number only have been
@@ -129,7 +140,7 @@ SEQUENCES = {
             }
 
 # Define new functions
-def protected_divide(numerator, denominator):
+def pdiv(numerator, denominator):
     '''
     Protected division; protect against potential divide by zero errors.
     Params:
@@ -141,6 +152,38 @@ def protected_divide(numerator, denominator):
     retval = 0
     if denominator:
         retval = numerator / denominator
+    return retval
+
+def pfac(value):
+    '''
+    Protected division; protect against potential divide by zero errors.
+    Params:
+        numerator   - individual object; individual to be tested.
+        denominator - integer number list; terms to match.
+	Returns:
+    	Division result or 0 if denominator is 0.
+    '''
+    value = int(round(value))
+    if value > 0 and value < 20:
+        retval = math.factorial(value)
+    else:
+        retval = 0
+    return retval
+
+def ppow(value):
+    '''
+    Protected division; protect against potential divide by zero errors.
+    Params:
+        numerator   - individual object; individual to be tested.
+        denominator - integer number list; terms to match.
+	Returns:
+    	Division result or 0 if denominator is 0.
+    '''
+    value = int(round(value))
+    if value > 0 and value < 20:
+        retval = math.pow(2, value)
+    else:
+        retval = 0
     return retval
 
 
@@ -175,20 +218,22 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.add, 2)
         self.pset.addPrimitive(operator.sub, 2)
         self.pset.addPrimitive(operator.mul, 2)
-        self.pset.addPrimitive(protected_divide, 2)
+        self.pset.addPrimitive(pdiv, 2)
+        self.pset.addPrimitive(pfac, 1)
+        self.pset.addPrimitive(ppow, 1)
+
+#        self.pset.addPrimitive(operator.abs, 1)
         self.pset.addPrimitive(operator.neg, 1)
         self.pset.addPrimitive(math.cos, 1)
         self.pset.addPrimitive(math.sin, 1)
-# TODO: More examples: will need to define the handling conditional function
-# pset.addPrimitive(if_then_else, 3)
-# pset.addTerminal(1)
-# pset.addTerminal(0)
+
         # Ref: DEAP 1.2.2 Documentation on Genetic Programming
         # An ephemeral constant is a terminal encapsulating a value that is
         # generated from a given function at run time. The ephemeral constant
         # value is determined when it is inserted in the tree and never
         # changes unless it is replaced by another ephemeral constant.
         self.pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
+        self.pset.addTerminal(math.pi, "pi")
         # We only have one input argument 'n' indexing the current integer in
         # the sequence.
         self.pset.renameArguments(ARG0='n')
@@ -285,13 +330,13 @@ class CIntegerSequenceGp:
         self.mstats.register("min", numpy.min)
         self.mstats.register("max", numpy.max)
 
-    def execute_gp(self):
+    def execute_gp(self, rounded=False):
         '''
         Execute the DEAP GP according to the specified configuration.
         Running the algorithm results in it returning an optimised population
         and the statistics log for each generation.
         Params:
-            N/A
+            rounded - boolean flag; True=round resultant numbers
         Returns:
             N/A
         '''
@@ -317,22 +362,28 @@ class CIntegerSequenceGp:
             func = self.toolbox.compile(expr=self.expr)
             self.rlist = [func(n) for n, _ in enumerate(self.slist,
                                                         start=self.start)]
+            # Optional rounding of values
+            if rounded:
+                self.rlist = [round(val) for val in self.rlist]
         else:
             self.rlist = None
             self.expr = None
         self.pop = pop
         self.log = log
 
-    def show_results(self):
+    def show_results(self, gtitle):
         '''
         Display the results of executing the DEAP GP object; best individual
         is displayed.
         Params:
-            N/A
+            gtitle - string of the graph title.
         Returns:
             N/A
         '''
         if self.rlist:
+            # Show the squence required
+            result = ", ".join(map(str, self.slist))
+            print("\nRequired sequence: {}".format(result))
             # Show the resultant integer sequence
             result = ", ".join(map(str, self.rlist))
             print("\nCalculated result: {}".format(result))
@@ -351,35 +402,24 @@ class CIntegerSequenceGp:
 # TODO: Need to print out if we've been successful or not.
 # TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
 ### TODO: Get this code up and running again; Windows / Linux check?!
-#            nodes, edges, labels = gp.graph(expr)
             if sys.platform == 'linux' or sys.platform == 'linux2':
                 print("Running on Linux OS.")
-                ### Graphviz Section ###
-#               import pygraphviz as pgv
+                nodes, edges, labels = gp.graph(self.expr)
+                # Create tree diagram
+                g = nx.Graph()
+                g.add_nodes_from(nodes)
+                g.add_edges_from(edges)
+                pos = graphviz_layout(g, prog="dot")
 
-#               g = pgv.AGraph()
-#               g.add_nodes_from(nodes)
-#               g.add_edges_from(edges)
-#               g.layout(prog="dot")
+                nx.draw_networkx_nodes(g, pos)
+                nx.draw_networkx_edges(g, pos)
+                nx.draw_networkx_labels(g, pos, labels)
 
-#               for i in nodes:
-#                   n = g.get_node(i)
-#                   n.attr["label"] = labels[i]
-
-#               g.draw("tree.pdf")
-###########################################################
-#               import matplotlib.pyplot as plt
-#               import networkx as nx
-
-#               g = nx.Graph()
-#               g.add_nodes_from(nodes)
-#               g.add_edges_from(edges)
-#               pos = nx.graphviz_layout(g, prog="dot")
-
-#               nx.draw_networkx_nodes(g, pos)
-#               nx.draw_networkx_edges(g, pos)
-#               nx.draw_networkx_labels(g, pos, labels)
-#               plt.show()
+                # Remove the filename extension
+                gtitle = os.path.splitext(gtitle)[0]
+                plt.title(gtitle, None, 'center', None)
+                plt.savefig(gtitle + '.png')
+                #                plt.show()
             else:
                 print("Graphical output only available on Linux.")
         else:
@@ -417,7 +457,7 @@ class CIntegerSequenceGp:
             print("No results available to write to file.")
 
 
-def main(sequence, maxterms, psize, generations):
+def main(sequence, maxterms, psize, generations, rounded):
     '''
     Execute the DEAP GP on the specified Integer Sequence for the specified
     population size and for the specified number of generations.
@@ -443,14 +483,17 @@ def main(sequence, maxterms, psize, generations):
     isgp.config_statistics()
 
     # Now run the Genetic Program code
-    isgp.execute_gp()
+    isgp.execute_gp(rounded)
 
-    # Show the results
-    isgp.show_results()
-    # Save the results
     results_filename = "results-{}_{}_{}_{}.txt" \
                        .format(sequence, maxterms, psize, generations)
+    # Show the results
+    isgp.show_results(results_filename)
+    # Save the results
     isgp.save_results(results_filename)
+
+    # Clean up the object
+    del(isgp)
 
 
 if __name__ == "__main__":
@@ -461,6 +504,8 @@ if __name__ == "__main__":
     PARSER.add_argument('maxterms', nargs=1, help='Maximum number of terms.')
     PARSER.add_argument('psize', nargs=1, help='Population size.')
     PARSER.add_argument('generations', nargs=1, help='Number of generations.')
+    PARSER.add_argument('--round', action='store_true',
+                        help='Rounds the resultant sequence.')
     PARSER.add_argument('--version', action='version', version=SCRIPTINFO)
     PARSER.add_argument('--timer', '-t',
                         help='Script execution time.',
@@ -497,7 +542,7 @@ if __name__ == "__main__":
 
     # Start up the application
     if params_ok:
-        main(seq, mterms, population_size, gens)
+        main(seq, mterms, population_size, gens, ARGS['round'])
 
     # Are we on the timer?
     if ARGS['timer']:

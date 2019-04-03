@@ -191,9 +191,10 @@ def pdiv(numerator, denominator):
 	Returns:
     	Division result or 0 if denominator is 0.
     '''
-    retval = 0
     if denominator:
         retval = numerator / denominator
+    else:
+        retval = 0
     return retval
 
 def pfac(value):
@@ -205,25 +206,36 @@ def pfac(value):
 	Returns:
     	Division result or 0 if denominator is 0.
     '''
-    value = int(round(value))
-    if value > 0 and value < 20:
-        retval = math.factorial(value)
+    try:
+        retval = math.factorial(int(value))
+    except Exception as ex:
+        retval = 0
+    return retval
+
+def pbase_pow_2(base):
+    '''
+    Performs a protected mathematical calculation of base^2.
+    Params:
+        base - base number.
+	Returns:
+    	Result or 0 on error.
+    '''
+    if type(base) == int and base < 1000000:
+        retval = math.pow(base, 2)
     else:
         retval = 0
     return retval
 
-def ppow(value):
+def p2_pow_expo(expo):
     '''
-    Protected division; protect against potential divide by zero errors.
+    Performs a protected mathematical calculation of 2^expo.
     Params:
-        numerator   - individual object; individual to be tested.
-        denominator - integer number list; terms to match.
+        expo - exponent number.
 	Returns:
-    	Division result or 0 if denominator is 0.
+    	Result or 0 on error.
     '''
-    value = int(round(value))
-    if value > 0 and value < 20:
-        retval = math.pow(2, value)
+    if expo < 150.0:
+        retval = math.pow(2, expo)
     else:
         retval = 0
     return retval
@@ -262,7 +274,8 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.mul, 2)
         self.pset.addPrimitive(pdiv, 2)
         self.pset.addPrimitive(pfac, 1)
-        self.pset.addPrimitive(ppow, 1)
+        self.pset.addPrimitive(pbase_pow_2, 1)
+        self.pset.addPrimitive(p2_pow_expo, 1)
 
         self.pset.addPrimitive(operator.abs, 1)
         self.pset.addPrimitive(operator.neg, 1)
@@ -339,8 +352,13 @@ class CIntegerSequenceGp:
         func = self.toolbox.compile(expr=individual)
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
-        sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
-        return math.fsum(sqerrors) / len(points),
+        size = len(points)
+        try:
+            sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
+            sqerrors = math.fsum(sqerrors) / size
+        except Exception as ex:
+            sqerrors = 10.0
+        return sqerrors,
 
     def set_population(self):
         '''

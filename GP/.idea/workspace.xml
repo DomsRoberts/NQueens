@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f229926-ded5-4b60-8c1b-da802ea2b79d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nQueens.py" beforeDir="false" afterPath="$PROJECT_DIR$/nQueens.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,11 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nQueens.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="405" column="30" lean-forward="true" selection-start-line="405" selection-start-column="30" selection-end-line="405" selection-end-column="30" />
-              <folding>
-                <element signature="e#1572#1581#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="480">
+              <caret line="279" selection-start-line="279" selection-end-line="279" />
             </state>
           </provider>
         </entry>
@@ -27,8 +25,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nQueensSystemTest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="54" column="42" lean-forward="true" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
+            <state relative-caret-position="920">
+              <caret line="54" column="42" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
               <folding>
                 <element signature="e#667#676#0" expanded="true" />
               </folding>
@@ -68,6 +66,9 @@
       <find>sname</find>
       <find>TODO:</find>
       <find>TODO</find>
+      <find>round</find>
+      <find>ppow</find>
+      <find>except</find>
     </findStrings>
     <replaceStrings>
       <replace>eval_sequence</replace>
@@ -91,7 +92,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="85" />
+    <option name="x" value="-4" />
+    <option name="y" value="39" />
     <option name="width" value="1825" />
     <option name="height" value="1040" />
   </component>
@@ -209,7 +211,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5005423" side_tool="true" weight="0.32908705" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" visible="true" weight="0.32908705" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.31958762" />
       <window_info anchor="bottom" id="SonarLint" order="11" weight="0.32908705" />
       <window_info anchor="bottom" id="Pylint" order="12" sideWeight="0.4994577" weight="0.32908705" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -286,13 +288,6 @@
         <state relative-caret-position="-840" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/deap/gp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/adf_symbreg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3280">
@@ -302,21 +297,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nQueensSystemTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="54" column="42" lean-forward="true" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
+        <state relative-caret-position="920">
+          <caret line="54" column="42" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
           <folding>
             <element signature="e#667#676#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../deap/deap/gp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/nQueens.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="405" column="30" lean-forward="true" selection-start-line="405" selection-start-column="30" selection-end-line="405" selection-end-column="30" />
-          <folding>
-            <element signature="e#1572#1581#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="480">
+          <caret line="279" selection-start-line="279" selection-end-line="279" />
         </state>
       </provider>
     </entry>

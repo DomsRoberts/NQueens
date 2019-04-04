@@ -206,40 +206,11 @@ def pfac(value):
 	Returns:
     	Division result or 0 if denominator is 0.
     '''
-    try:
-        retval = math.factorial(int(value))
-    except Exception as ex:
-        retval = 0
-    return retval
-
-def pbase_pow_2(base):
-    '''
-    Performs a protected mathematical calculation of base^2.
-    Params:
-        base - base number.
-	Returns:
-    	Result or 0 on error.
-    '''
-    if type(base) == int and base < 1000000:
-        retval = math.pow(base, 2)
+    if value == int and value < 50 and value > 0:
+        retval = math.factorial(value)
     else:
         retval = 0
     return retval
-
-def p2_pow_expo(expo):
-    '''
-    Performs a protected mathematical calculation of 2^expo.
-    Params:
-        expo - exponent number.
-	Returns:
-    	Result or 0 on error.
-    '''
-    if expo < 150.0:
-        retval = math.pow(2, expo)
-    else:
-        retval = 0
-    return retval
-
 
 class CIntegerSequenceGp:
     '''
@@ -274,8 +245,6 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.mul, 2)
         self.pset.addPrimitive(pdiv, 2)
         self.pset.addPrimitive(pfac, 1)
-        self.pset.addPrimitive(pbase_pow_2, 1)
-        self.pset.addPrimitive(p2_pow_expo, 1)
 
         self.pset.addPrimitive(operator.abs, 1)
         self.pset.addPrimitive(operator.neg, 1)

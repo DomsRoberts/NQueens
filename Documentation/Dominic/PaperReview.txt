@@ -1,0 +1,21 @@
+A Quantum N-Queens Solver :- Torggler, Aumann, Ritsch, Lechner
+Makes use of a specifically developed Quantum Simulator to solve the excluded diagonals variation of the N-Queens problem.
+Each Queen is represented by an atom held in anisotropic optical position. This prevents multiple atoms appearing in the same column.
+
+NQueens solving algorithm by sets and Backtracking
+Guldal, Baugh, 
+Uses a backtracking algorithm where partial candidate solutions are abandoned as soon as they are deemed invalid.
+The algorithm places a queen on the board in the first column and then finds a valid cell in the next column. This process continues
+until all Queens are placed. The Set part of the algorithm removes the invalid cells from selection prior to evaluation to improve performance.
+If it is unable to find a valid cell it will backtrack through the columns, reinstating the cells that the Set algorithm had eliminated and tries a new
+position and repeats the process. The proposed algorithm is shown to be exponentially faster than a back-tracking implementation alone.
+
+Using Genetic Algorithm for Solving N-Queens problem
+Turky, Sharifuddin
+The implementation proposed in the paper uses a two-point crossover operation along with a repair mechanism that removes poorer Queens from the solution.
+The algorithm was able to find a single solution for 2000 dimensions in 1023.845 seconds (approx 17 mins) when using a popuilation size of 400.
+
+Comparison of Heuristic Algorithms for the N-Queens problem
+I. Martinjak, M. Golub
+Compares the results for implementations using the Tabu search, Simulated Annealing and a Genetic Algorithm. 
+A Square of NxN Queens has N^n possible combinations of positions, even a standard 8x8 has 16,777,216 possible placement combinations. A poor brute-force implementation would have to evaluate each of these in order to find all valid positions. Simulated Annealing reduced the complexity of the evaluation function to O(1). The SA implementation consisted of changing two randomly chosen positions on each iteration. Simulated Annealing averaged 492 iterations to find the first solution of 8x8 board.

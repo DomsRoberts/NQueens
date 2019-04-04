@@ -84,13 +84,24 @@ It is possible to determine valid results for all dimensions above 3. There are 
 	\caption{The number of Solutions and Unique Solutions for a range of values for N}
 \end{table*}
 
-Table 1 gives the number of solutions along with the unique solutions for each dimension. For every solution to the problem it is possible that there is also a rotational or reflected variant that is also a possible valid configuration. By rotating the board through 90, 180 and 270 degrees or reflecting through the central X and Y axis of the board then further valid solutions can be found.
+Table 1 gives the number of solutions along with the unique variants at each dimension. For every solution to the problem it is possible that there is also a rotational or reflected variant that could also be a valid configuration. By rotating the board through 90, 180 and 270 degrees or reflecting along the central X and Y axis of the board then further valid solutions can be found.
 
 \begin{figure}[!htbp]
 	\centering	
 	\includegraphics[width=16cm, height=4cm]{NQueensRotations}
 	\caption{By rotating a configuration through 360 degrees further valid solutions can be derived.}
 \end{figure}
+
+\begin{figure}[!htbp]
+	\centering	
+	\includegraphics[width=8cm, height=4cm]{Valid8QueensReflected}
+	\caption{By reflecting the layout along the X and Y axis other valid solutions can be derived.}
+\end{figure}
+
+The ability to locate up to an additional 5 solutions from an initial configuration improves the performance of a Search algorithm. Each time a new solution is found analysing each of the transformations can yield multiple valid layouts.
+
+Although it is generally considered to be merely a mathematical puzzle there are numerous real world applications for solutions to the problem.
+
 
 \section{Implementation}
 \subsection{Genetic Algorithm}
@@ -115,6 +126,8 @@ The implemented genetic algorithm starts by generating clusters of genomes known
 \bibitem{comparison} Martinjak, Ivica. Golub, M. (2007). Comparison of Heuristic Algorithms for the N-Queen Problem. 759 - 764. 10.1109/ITI.2007.4283867.
 
 \bibitem{PSO}  Y. Wang, H. Lin, L. Yang (2012) "Swarm Refinement PSO for Solving N-Queens problem" Third International Conference on Bio-Inspired Computing and Applications. Kaoshiung 2012
+
+\bibitem{Deadlock} M.M. Tanik, A graph model for deadlock prevention, Ph.D. Thesis, Texas A and M University, 1978
 
 
 

@@ -1,8 +1,11 @@
 import math
+#from elasticsearch import Elasticsearch
+
 
 class NQueensEvaluation:
 
     def __init__(self):
+      #  self.es = Elasticsearch()
         self.resultStore = {}
         self.evaluations = 0
         self.duplicates = 0
@@ -11,7 +14,7 @@ class NQueensEvaluation:
     def evaluate(self, values):
         result = self.countNumberOfAttackingQueens(values)
 
-        if (result < 0.1) :
+        if result < 0.1:
             self.attemptRotations(values)
             self.attemptReflections(values)
 

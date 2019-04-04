@@ -12,38 +12,17 @@ class NQueensHistoricalLocationBuilder(LocationBuildController):
         if isTest is False:
             self.import_rows = self.import_file(lower_dimensions)
             self.import_table = self.import_cell_store(lower_dimensions, self.import_rows)
-            if len(self.import_table) > 0:
-                self.cell_store = self.scale_to_fit(parameters.dimensions, lower_dimensions, self.import_table)
-            else:
-                self.cell_store = self.create_empty_cell_store(parameters.dimensions, parameters.dimensions)
+            self.cell_store = self.create_empty_cell_store(parameters.dimensions, parameters.dimensions)
 
             self.cell_table = self.build_chance_table(parameters.dimensions, self.cell_store)
 
     def build(self, build_params):
-        location = ""
+        location = []
         for x in range(0, self.parameters.dimensions):
             index = self.select_location(self.parameters.dimensions, x)
-            char = self.convert_to_char(index)
-            location = location + char
+            location.append(index)
 
         return location
-
-    def scale_to_fit(self, dimensions, lower_dimensions, cell_table):
-        scale = lower_dimensions / dimensions
-        one_over = 1 - scale
-        scale_values = self.create_empty_cell_store(dimensions, 0)
-
-        for x in range(0, lower_dimensions):
-            for y in range(0, lower_dimensions):
-                cell_value = cell_table[x][y]
-                value_to_use_left = (scale * cell_value) if y > 0 else cell_value
-                value_to_use_right = (one_over * cell_value) if y < (lower_dimensions - 1) else cell_value
-                scale_values[x][y] += int(math.ceil(value_to_use_left))
-                scale_values[x+1][y] += int(math.ceil(value_to_use_left))
-                scale_values[x][y+1] += int(math.ceil(value_to_use_right))
-                scale_values[x + 1][y + 1] += int(math.ceil(value_to_use_right))
-
-        return scale_values
 
     def import_file(self, import_dimensions):
         with open(str(import_dimensions) + "output.txt") as f:
@@ -94,9 +73,6 @@ class NQueensHistoricalLocationBuilder(LocationBuildController):
             return random.randint(0, dimensions -1)
         rand = random.randint(0, length - 1)
         return table[rand]
-
-    def convert_to_char(self, index):
-        return chr(ord('A') + index)
 
     def is_not_edge_cell(self, x, y, lower_dimensions):
         edge = lower_dimensions - 1

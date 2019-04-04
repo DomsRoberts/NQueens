@@ -11,8 +11,8 @@ class NQueensDistributingLocationBuilder(LocationBuildController):
     def __init__(self, parameters, location_builders, history_dim):
         super(NQueensDistributingLocationBuilder, self).__init__(parameters, location_builders)
         self.duplicate_builder = NQueensHistoricalDuplicateLocationBuilder(parameters, location_builders, history_dim)
-        self.cross_over_builder = CrossOverLocationBuilder(parameters)
-        self.genetic_builder = LocationBuilder(parameters)
+        self.cross_over_builder = NQueensHistoricalDuplicateLocationBuilder(parameters, location_builders, history_dim)#CrossOverLocationBuilder(parameters) #NQueensHistoricalDuplicateLocationBuilder(parameters, location_builders, history_dim-1)
+        self.genetic_builder = NQueensHistoricalDuplicateLocationBuilder(parameters, location_builders, history_dim) #LocationBuilder(parameters)
         self.requests = 0
         self.bias = parameters.bias
         self.parameters = parameters
@@ -23,7 +23,7 @@ class NQueensDistributingLocationBuilder(LocationBuildController):
             self.bias[0] -= 2
             self.bias[1] -= 1
 
-        index = random.randint(0, 100)
+        index = random.randint(0, self.bias[2])
 
         if index < self.bias[0]:
             return self.duplicate_builder.build(build_params)

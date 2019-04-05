@@ -67,7 +67,7 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
 
 __author__ = 'David Kind'
-__date__ = '30-03-2019'
+__date__ = '05-04-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
@@ -98,7 +98,7 @@ MATING_RATE = 0.5       # Probability of mating two individuals (%)
 SEQUENCES = {
             # Linear Integer Sequences
             # Natural numbers; n=1 (https://oeis.org/A000027)
-            "Natural":[1,
+            "Natural": [1,
                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                        17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
                        31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44,
@@ -106,14 +106,14 @@ SEQUENCES = {
                        59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72,
                        73, 74, 75, 76, 77]],
             # Even numbers; n=0 (https://oeis.org/A005843)
-            "Even":[0,
+            "Even": [0,
                     [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30,
                     32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60,
                     62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90,
                     92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116,
                     118, 120]],
             # Odd numbers; n=0 (https://oeis.org/A005408)
-            "Odd":[0,
+            "Odd": [0,
                    [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29,
                    31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57,
                    59, 61, 63, 65, 67, 69, 71, 73, 75, 77, 79, 81, 83, 85,
@@ -121,38 +121,38 @@ SEQUENCES = {
                    113, 115, 117, 119, 121, 123, 125, 127, 129, 131]],
             # Non-linear Integer Sequences
             # Square numbers; n=0 (https://oeis.org/A000290)
-            "Square":[0,
+            "Square": [0,
                       [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169,
                       196, 225, 256, 289, 324, 361, 400, 441, 484, 529, 576,
                       625, 676, 729, 784, 841, 900, 961, 1024, 1089, 1156,
                       1225, 1296, 1369, 1444, 1521, 1600, 1681, 1764, 1849,
                       1936, 2025, 2116, 2209, 2304, 2401, 2500]],
             # Cube numbers; n=0 (https://oeis.org/A000578)
-            "Cube":[0,
+            "Cube": [0,
                     [0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728,
                     2197, 2744, 3375, 4096, 4913, 5832, 6859, 8000, 9261, 10648,
                     12167, 13824, 15625, 17576, 19683, 21952, 24389, 27000,
                     29791, 32768, 35937, 39304, 42875, 46656, 50653, 54872,
                     59319, 64000]],
             # Prime numbers; n=1 (https://oeis.org/A000040)
-            "Prime":[1,
+            "Prime": [1,
                      [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
                      53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107,
                      109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
                      179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
                      239, 241, 251, 257, 263, 269, 271]],
             # Lucky numbers; n=1 (https://oeis.org/A000959)
-            "Lucky":[1,
+            "Lucky": [1,
                      [1, 3, 7, 9, 13, 15, 21, 25, 31, 33, 37, 43, 49, 51, 63,
                      67, 69, 73, 75, 79, 87, 93, 99, 105, 111, 115, 127, 129,
                      133, 135, 141, 151, 159, 163, 169, 171, 189, 193, 195, 201,
                      205, 211, 219, 223, 231, 235, 237, 241, 259, 261, 267,
                      273, 283, 285, 289, 297, 303]],
             # Fermat numbers; n=0 (https://oeis.org/A000215)
-            "Fermat":[0,
+            "Fermat": [0,
                       [3, 5, 17, 257, 65537, 4294967297, 18446744073709551617]],
             # Semiprimes or biprimes; n=1 (https://oeis.org/A001358)
-            "Semiprime":[1,
+            "Semiprime": [1,
                          [4, 6, 9, 10, 14, 15, 21, 22, 25, 26, 33, 34, 35, 38,
                          39, 46, 49, 51, 55, 57, 58, 62, 65, 69, 74, 77, 82,
                          85, 86, 87, 91, 93, 94, 95, 106, 111, 115, 118, 119,
@@ -160,10 +160,10 @@ SEQUENCES = {
                          146, 155, 158, 159, 161, 166, 169, 177, 178, 183, 185,
                          187]],
             # Magic numbers; n=1 (https://oeis.org/A018226)
-            "Magic":[1,
+            "Magic": [1,
                      [2, 8, 20, 28, 50, 82, 126]],
             # n-Queens fundamental numbers; n=1 (https://oeis.org/A002562)
-            "nQueensFundamental":[1,
+            "nQueensFundamental": [1,
                                   [1, 0, 0, 1, 2, 1, 6, 12, 46, 92, 341, 1787,
                                   9233, 45752, 285053, 1846955, 11977939,
                                   83263591, 621012754, 4878666808,
@@ -172,7 +172,7 @@ SEQUENCES = {
                                   275986683743434, 2789712466510289,
                                   29363495934315694]],
             # n-Queens fundamental numbers; n=0 (https://oeis.org/A000170)
-            "nQueensAll":[0,
+            "nQueensAll": [0,
                           [1, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200,
                           73712, 365596, 2279184, 14772512, 95815104,
                           666090624, 4968057848, 39029188884, 314666222712,
@@ -238,26 +238,29 @@ class CIntegerSequenceGp:
         '''
 # TODO: Example script adf_symbreg.py shows how you can specify different
 #       primitive sets and then cycle through them for test purposes.
-        self.pset = gp.PrimitiveSet("MAIN", 1)
-        # Can now add the primitive operators
-        self.pset.addPrimitive(operator.add, 2)
-        self.pset.addPrimitive(operator.sub, 2)
-        self.pset.addPrimitive(operator.mul, 2)
-        self.pset.addPrimitive(pdiv, 2)
-        self.pset.addPrimitive(pfac, 1)
+        self.pset = gp.PrimitiveSetTyped("MAIN", [int], int)
 
-        self.pset.addPrimitive(operator.abs, 1)
-        self.pset.addPrimitive(operator.neg, 1)
-        self.pset.addPrimitive(math.cos, 1)
-        self.pset.addPrimitive(math.sin, 1)
+        # Can now add the primitive operators
+        self.pset.addPrimitive(operator.add, [float, int], float)
+        self.pset.addPrimitive(operator.sub, [float, int], float)
+        self.pset.addPrimitive(operator.mul, [float, int], float)
+        self.pset.addPrimitive(pdiv, [float, int], float)
+        self.pset.addPrimitive(pfac, [int], int)
+
+        self.pset.addPrimitive(operator.abs, [float], float)
+        self.pset.addPrimitive(operator.neg, [float], float)
+        self.pset.addPrimitive(math.cos, [float], float)
+        self.pset.addPrimitive(math.sin, [float], float)
+        self.pset.addPrimitive(round, [float], int)
 
         # Ref: DEAP 1.2.2 Documentation on Genetic Programming
         # An ephemeral constant is a terminal encapsulating a value that is
         # generated from a given function at run time. The ephemeral constant
         # value is determined when it is inserted in the tree and never
         # changes unless it is replaced by another ephemeral constant.
-        self.pset.addEphemeralConstant("rand101", lambda: random.randint(-1, 1))
-        self.pset.addTerminal(math.pi, "pi")
+        self.pset.addEphemeralConstant("rand101",
+                                       lambda: random.randint(-1, 1), int)
+        self.pset.addTerminal(math.pi, float, "pi")
         # We only have one input argument 'n' indexing the current integer in
         # the sequence.
         self.pset.renameArguments(ARG0='n')

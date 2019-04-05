@@ -212,6 +212,21 @@ def pfac(value):
         retval = 0
     return retval
 
+def if_then_else(in1, out1, out2):
+    '''
+    Conditional; tests boolean in1 and then either returns out1 if true or
+    out2 if false.
+    Params:
+        numerator   - boolean input
+	Returns:
+    	Result of testing in1.
+    '''
+    if in1:
+        retval = out1
+    else:
+        retval = out2
+    return retval
+
 class CIntegerSequenceGp:
     '''
     Integer sequence Genetic Program using the DEAP module library.
@@ -253,6 +268,10 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(math.sin, [float], float)
         self.pset.addPrimitive(round, [float], int)
 
+        self.pset.addPrimitive(operator.lt, [float, int], bool)
+        self.pset.addPrimitive(operator.eq, [float, int], bool)
+        self.pset.addPrimitive(if_then_else, [bool, float, int], float)
+
         # Ref: DEAP 1.2.2 Documentation on Genetic Programming
         # An ephemeral constant is a terminal encapsulating a value that is
         # generated from a given function at run time. The ephemeral constant
@@ -261,6 +280,8 @@ class CIntegerSequenceGp:
         self.pset.addEphemeralConstant("rand101",
                                        lambda: random.randint(-1, 1), int)
         self.pset.addTerminal(math.pi, float, "pi")
+        self.pset.addTerminal(False, bool)
+        self.pset.addTerminal(True, bool)
         # We only have one input argument 'n' indexing the current integer in
         # the sequence.
         self.pset.renameArguments(ARG0='n')

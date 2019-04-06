@@ -15,9 +15,7 @@ class CrossOverLocationBuilder(LocationBuilder):
 
         deme_one_best = self.select_new_location(location_store, total_available)
 
-        deme_two_best = self.select_new_location(location_store, total_available)
-
-        cross_location = GeneticFunctions.create_crossover(deme_one_best, deme_two_best)
+        cross_location = GeneticFunctions.switch_positions(deme_one_best, self.parameters.dimensions / 2)
         return cross_location
 
     def select_new_location(self, location_store, total_available):

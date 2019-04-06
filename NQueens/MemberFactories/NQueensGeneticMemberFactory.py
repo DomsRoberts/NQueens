@@ -9,6 +9,5 @@ class NQueensGeneticMemberFactory(GeneticMemberFactory):
         super(NQueensGeneticMemberFactory, self).__init__(parameters)
 
     def build(self, deme_location, location_store):
-        random_location = GeneticFunctions.create_random_location(self.parameters.dimensions) #location_store.select_at_random()
-        new_location = GeneticFunctions.create_crossover(deme_location, random_location)
+        new_location = GeneticFunctions.switch_positions(deme_location, 3)
         return NQueensGeneticMember(self.parameters, new_location, self.parameters.mutation_count)

@@ -342,7 +342,7 @@ class CIntegerSequenceGp:
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         size = len(points)
-        gof_method = {"mse": True, "chisq": False}
+        gof_method = {"mse": False, "chisq": False, "gtest": True}
         try:
             # Calculate the Mean Square Error (mse)
             if gof_method["mse"]:
@@ -352,10 +352,13 @@ class CIntegerSequenceGp:
             # Calculate the Pearson Chi-squared value.
             # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
             elif gof_method["chisq"]:
-#                chisq = ((((func(n) - val) ** 2) / val) for n, val in
-                chisq = (((func(n) - val) / val) for n, val in
+                chisq = ((((func(n) - val) ** 2) / val) for n, val in
                         enumerate(points, start=self.start))
-                result = math.fsum(chisq) / size
+                result = math.fabs(math.fsum(chisq))
+            elif gof_method["gtest"]:
+                gtest = ((math.log(func(n) / val) * func(n)) for n, val in
+                         enumerate(points, start=self.start))
+                result = 2 * math.fsum(gtest)
         except Exception as ex:
             result = 1000000.0
         return result,

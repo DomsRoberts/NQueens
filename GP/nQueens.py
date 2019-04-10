@@ -328,13 +328,14 @@ class CIntegerSequenceGp:
 
     def eval_sequence(self, individual, points):
         '''
-        Evaluate the individual's tree function on the values of 'n' and
-        report the mean squared error of doing so.
+        We are performing a GoF (Goodness-of-Fit) evaluation. There are
+        several methods for doing this and it is dependant on whether we are
+        regression testing linear or non-linear functions.
         Params:
             individual  - individual object; individual to be tested.
             points      - integer number list; terms to match.
         Returns:
-            Sum of the mean squared error to the required values of 'n'.
+            Result of the GoF test.
         '''
         # Transform the tree expression in a callable function
         func = self.toolbox.compile(expr=individual)
@@ -343,9 +344,14 @@ class CIntegerSequenceGp:
         size = len(points)
         try:
             # Calculate the Mean Square Error (mse)
-            mse = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
-            mse = math.fsum(mse) / size
-            result = mse
+#            mse = ((func(n) - val) ** 2 for n, val in
+#                   enumerate(points, start=self.start))
+#            result = math.fsum(mse) / size
+            # Calculate the Pearson Chi-squared value.
+            # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
+            chisq = ((((func(n) - val) ** 2) / val) for n, val in
+                     enumerate(points, start=self.start))
+            result = math.fsum(chisq) / size
         except Exception as ex:
             result = 10.0
         return result,

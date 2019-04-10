@@ -27,7 +27,6 @@ increases in size; where n >= 1 integer. The number of solutions to the n-Queens
 problem, fundamental and all solutions, are integer sequences. This Genetic
 Program attempts to solve the n-Queens integer sequences by inductively creating
 an equation using the tree method.
-
 Shell execution examples:
     py -3 nQueens.py Natural 8 300 50
 Running the GP:
@@ -35,7 +34,6 @@ Running the GP:
     > with a maximum number of 8 terms from the sequence to check;
     > with a population of 300;
     > over 50 generations
-
     py -3 nQueens.py Prime 8 300 50 --round
 Running the GP:
     > against the Prime Number sequence;
@@ -43,7 +41,6 @@ Running the GP:
     > with a population of 300;
     > over 50 generations
     > rounding the resultant number sequence
-
 Note: this script has been developed to use Python 3.
 '''
 
@@ -251,8 +248,6 @@ class CIntegerSequenceGp:
         Returns:
             N/A
         '''
-# TODO: Example script adf_symbreg.py shows how you can specify different
-#       primitive sets and then cycle through them for test purposes.
         self.pset = gp.PrimitiveSetTyped("MAIN", [int], int)
 
         # Can now add the primitive operators
@@ -347,11 +342,13 @@ class CIntegerSequenceGp:
 	    # and the recorded Integer Sequence values.
         size = len(points)
         try:
-            sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
-            sqerrors = math.fsum(sqerrors) / size
+            # Calculate the Mean Square Error (mse)
+            mse = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
+            mse = math.fsum(mse) / size
+            result = mse
         except Exception as ex:
-            sqerrors = 10.0
-        return sqerrors,
+            result = 10.0
+        return result,
 
     def set_population(self):
         '''

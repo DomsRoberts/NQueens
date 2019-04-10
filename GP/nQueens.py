@@ -248,24 +248,24 @@ class CIntegerSequenceGp:
         Returns:
             N/A
         '''
-        self.pset = gp.PrimitiveSetTyped("MAIN", [int], int)
+        self.pset = gp.PrimitiveSetTyped("MAIN", [float], float)
 
         # Can now add the primitive operators
-        self.pset.addPrimitive(operator.add, [float, int], float)
-        self.pset.addPrimitive(operator.sub, [float, int], float)
-        self.pset.addPrimitive(operator.mul, [float, int], float)
-        self.pset.addPrimitive(pdiv, [float, int], float)
-        self.pset.addPrimitive(pfac, [int], int)
+        self.pset.addPrimitive(operator.add, [float, float], float)
+        self.pset.addPrimitive(operator.sub, [float, float], float)
+        self.pset.addPrimitive(operator.mul, [float, float], float)
+        self.pset.addPrimitive(pdiv, [float, float], float)
+#        self.pset.addPrimitive(pfac, [int], float)
 
         self.pset.addPrimitive(operator.abs, [float], float)
         self.pset.addPrimitive(operator.neg, [float], float)
         self.pset.addPrimitive(math.cos, [float], float)
         self.pset.addPrimitive(math.sin, [float], float)
-        self.pset.addPrimitive(round, [float], int)
+#        self.pset.addPrimitive(round, [float], int)
 
-        self.pset.addPrimitive(operator.lt, [float, int], bool)
-        self.pset.addPrimitive(operator.eq, [float, int], bool)
-        self.pset.addPrimitive(if_then_else, [bool, float, int], float)
+        self.pset.addPrimitive(operator.lt, [float, float], bool)
+        self.pset.addPrimitive(operator.eq, [float, float], bool)
+        self.pset.addPrimitive(if_then_else, [bool, float, float], float)
 
         # Ref: DEAP 1.2.2 Documentation on Genetic Programming
         # An ephemeral constant is a terminal encapsulating a value that is
@@ -273,7 +273,7 @@ class CIntegerSequenceGp:
         # value is determined when it is inserted in the tree and never
         # changes unless it is replaced by another ephemeral constant.
         self.pset.addEphemeralConstant("rand101",
-                                       lambda: random.randint(-1, 1), int)
+                                       lambda: random.randint(-1, 1), float)
         self.pset.addTerminal(math.pi, float, "pi")
         self.pset.addTerminal(False, bool)
         self.pset.addTerminal(True, bool)
@@ -342,18 +342,22 @@ class CIntegerSequenceGp:
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         size = len(points)
+        gof_method = {"mse": True, "chisq": False}
         try:
             # Calculate the Mean Square Error (mse)
-#            mse = ((func(n) - val) ** 2 for n, val in
-#                   enumerate(points, start=self.start))
-#            result = math.fsum(mse) / size
+            if gof_method["mse"]:
+                mse = ((func(n) - val) ** 2 for n, val in
+                       enumerate(points, start=self.start))
+                result = math.fsum(mse) / size
             # Calculate the Pearson Chi-squared value.
             # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
-            chisq = ((((func(n) - val) ** 2) / val) for n, val in
-                     enumerate(points, start=self.start))
-            result = math.fsum(chisq) / size
+            elif gof_method["chisq"]:
+#                chisq = ((((func(n) - val) ** 2) / val) for n, val in
+                chisq = (((func(n) - val) / val) for n, val in
+                        enumerate(points, start=self.start))
+                result = math.fsum(chisq) / size
         except Exception as ex:
-            result = 10.0
+            result = 1000000.0
         return result,
 
     def set_population(self):
@@ -454,10 +458,8 @@ class CIntegerSequenceGp:
             tree = gp.PrimitiveTree(self.expr)
             str(tree)
 
-# TODO: Display the best individual => graph and equation.
-# TODO: Need to print out if we've been successful or not.
-# TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
-### TODO: Get this code up and running again; Windows / Linux check?!
+            # Display the best individual => graph and equation.
+            # Only works reliably on Linux Ubuntu.
             if sys.platform == 'linux' or sys.platform == 'linux2':
                 print("Running on Linux OS.")
                 nodes, edges, labels = gp.graph(self.expr)

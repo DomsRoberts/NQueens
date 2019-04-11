@@ -175,6 +175,14 @@ SEQUENCES = {
                           666090624, 4968057848, 39029188884, 314666222712,
                           2691008701644, 24233937684440, 227514171973736,
                           2207893435808352, 22317699616364044,
+                          234907967154122528]],
+            # n-Queens fundamental numbers; n=0 (https://oeis.org/A000170)
+            "n4QueensAll": [4,
+                          [2, 10, 4, 40, 92, 352, 724, 2680, 14200,
+                          73712, 365596, 2279184, 14772512, 95815104,
+                          666090624, 4968057848, 39029188884, 314666222712,
+                          2691008701644, 24233937684440, 227514171973736,
+                          2207893435808352, 22317699616364044,
                           234907967154122528]]
             }
 
@@ -279,6 +287,7 @@ class CIntegerSequenceGp:
         self.pset.addTerminal(True, bool)
         # We only have one input argument 'n' indexing the current integer in
         # the sequence.
+# TODO: What about 3 inputs: n, n + 1, n + 2?
         self.pset.renameArguments(ARG0='n')
 
     def configure_toolbox(self):
@@ -314,10 +323,39 @@ class CIntegerSequenceGp:
         points = self.slist[:self.maxterms]
         self.toolbox.register("evaluate", self.eval_sequence, points=points)
         self.toolbox.register("select", tools.selTournament, tournsize=3)
-        self.toolbox.register("mate", gp.cxOnePoint)
-        self.toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
+        # Executes a one point crossover on the input sequence individuals.
+        # The two individuals are modified in place. The resulting
+        # individuals will respectively have the length of the other.
+#        self.toolbox.register("mate", gp.cxOnePoint)
+        # Randomly select crossover point in each individual and exchange
+        # each subtree with the point as root between each individual.
+        self.toolbox.register("mate", gp.cxOnePointLeafBiased, termpb=0.1)
+
+        # Generate an expression where each leaf has a the same depth between
+        # min and max.
+#        self.toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
+        # Generate an expression where each leaf might have a different depth
+        # between min and max.
+        self.toolbox.register("expr_mut", gp.genGrow, min_=0, max_=2)
+        # Generate an expression with a PrimitiveSet pset. Half the time,
+        # the expression is generated with genGrow(), the other half,
+        # the expression is generated with genFull().
+#        self.toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=2)
+
+        # Randomly select a point in the tree individual, then replace the
+        # subtree at that point as a root by the expression generated using
+        # method expr().
         self.toolbox.register("mutate", gp.mutUniform,
                               expr=self.toolbox.expr_mut, pset=self.pset)
+        # This operator shrinks the individual by chosing randomly a branch
+        # and replacing it with one of the branch’s arguments (also randomly
+        # chosen).
+#        self.toolbox.register("mutate", gp.mutShrink)
+        # Replaces a randomly chosen primitive from individual by a randomly
+        # chosen primitive with the same number of arguments from the pset
+        # attribute of the individual.
+#        self.toolbox.register("mutate", gp.mutNodeReplacement, pset=self.pset)
+
 
         self.toolbox.decorate("mate",
                               gp.staticLimit(key=operator.attrgetter("height"),
@@ -342,7 +380,7 @@ class CIntegerSequenceGp:
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         size = len(points)
-        gof_method = {"mse": False, "chisq": False, "gtest": True}
+        gof_method = {"mse": True, "chisq": False, "gtest": False}
         try:
             # Calculate the Mean Square Error (mse)
             if gof_method["mse"]:

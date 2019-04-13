@@ -112,15 +112,15 @@ There have been numerous areas of image processing that have also drawn influenc
 
 \section{Implementation}
 \subsection{Genetic Algorithm}
-It can be seen from Figure 1 that where there are no two pieces are on the same Horizontal or Vertical then the only concern when resolving the problem is along the diagonals. Representation of the board can be reduced to a tuple of integer values such that a valid solution for 8-Queens can be represented as (1,7,5,0,2,4,6,5) where 0-based indexing has been used. The storage structure for genome members can thus be an array of integer values. The array index infers the column and the value represents a row on that column.
+It can be seen from Figure 1 that where there are no two pieces are on the same Horizontal or Vertical then the only concern when resolving the problem is along the diagonals. Representation of the board can be reduced to a tuple of integer values such that a valid solution for 8-Queens can be represented as (1,7,5,0,2,4,6,5) where 0-based indexing has been used. The storage structure for genome members can thus be an array of integer values. The array index infers the column whilst value represents a row on that column. This structure is similar to that implemented in many other proposals such as \cite{Performance} \cite{Polynomial}.
 
-The implemented evaluation function receives an N length array of integers and returns the number of attacking conflicts present on the board layout described. A result of 0 conflicting positions indicates that a valid solution has been located. Using the array representation calculating the conflicts is a simple two step process. Step 1 is to detect duplicate values within the input array, each duplicate is counted as a conflict. Step 2 is to locate opposing diagonals, given two board locations c1 and c2 which are represented by the structure (x,y) where x is the column index and y is the cell value. Diagonals can be determined by: 
+The implemented evaluation function receives an N length array of integers and returns the number of attacking conflicts present on the board layout described. A result of 0 conflicting positions indicates that a valid solution has been located. Using the array representation calculating the conflicts is a simple two step process. Step 1 is to detect duplicate values within the input array, each duplicate is counted as a conflict. Step 2 is to locate opposing diagonals, given two board locations c1 and c2 which are represented by the structure (x,y) where x is the column index and y is the cell value. Diagonals can be determined in a manner similar to that proposed in \cite{Adaptive}: 
 \begin{lstlisting}
  if abs(currentX - boardX) == abs(currentY - boardY):
 	attackingQueens += 1
 \end{lstlisting}
 
-The generation of genome sequences and their subsequent mutations is required to ensure that no duplicate values are entered in to the array. The addition of duplicate values will immediately indicate an invalid solution. To ensure this, the process for updating a genome pattern was altered so that the transformations occur through the alteration of two positions within the current sequence and not through the introduction of new values in to the current values. New sequences are generated through a stochastic mutation process where two nodes are selected from the genome and their positions are swapped. No attempt is made to cross over parts of the sequence between differing members as this will lead to duplicate items in the structure. Duplication should be avoided in the genome generation as it is an automatic failure of the N-Queens problem. To ensure that no duplicates appear in the genome, switching of segments between two instances i.e. cross-over and randomly selecting a replacement value for an existing node i.e. standard mutation, are both avoided. Instead two locations in the sequence are selected at random and the values at those locations are switched. The tests performed on the solution showed a dramatic improvement in performance when the algorithm was exercised with variants of this transformation.
+The generation of genome sequences and their subsequent mutations is required to ensure that no duplicate values are entered in to the array. Addition of a duplicate value will immediately indicate an invalid solution. To ensure this, the process for updating a genome pattern was altered so that the transformations occur through the alteration of two positions within the current sequence and not through the introduction of new values in to the current values. New sequences are generated through a stochastic mutation process where two nodes are selected from the genome and their positions are swapped. No attempt is made to cross over parts of the sequence between differing members as this will lead to duplicate items in the structure. Duplication should be avoided in the genome generation as it is an automatic failure of the N-Queens problem. To ensure that no duplicates appear in the genome, switching of segments between two instances i.e. cross-over and randomly selecting a replacement value for an existing node i.e. standard mutation, are both avoided. Instead two locations in the sequence are selected at random and the values at those locations are switched. The tests performed on the solution showed a dramatic improvement in performance when the algorithm was exercised with variants of this transformation.
 
 \begin{figure}[!htbp]
 	\centering	
@@ -236,7 +236,9 @@ The clear increase in performance for the location of a first solution is in con
 
 Figures 11 and 12 indicate that using the known locations as starting points for the Demes gives an advantage over randomly selected locations during the initial phases but is surpassed when locating the tail end of solutions. 
 
-Results for each dimension are based up on the values obtained at a lower dimension though tests show that only a small number of source values are required to achieve a valid solution at the higher N. To obtain a sequence at N = 100 sequences are required for N = 99. Tests were performed to gauge how many evaluations were required to find a resolution for N = 100 by initiating the tests with only a set of solutions for N = 7. The test run was executed by incrementing the step 1 dimension at a time from N= 8 to N = 100, on each iteration the results are stored in memory and passed to the process on commencement of each step. The intention is to evaluate how long it would take to obtain a solution for N = 100 having started with a basic level of seed information. The result of tests showed that it was possible to obtain a first valid solution in only 240,899 evaluations.
+Results for each dimension are based up on the values obtained at a lower dimension though tests show that only a small number of source values are required to achieve a valid solution at the higher N. To obtain a sequence at N = 100 sequences are required for N = 99. Tests were performed to gauge how many evaluations were required to find a resolution for N = 100 by initiating the tests with only a set of solutions for N = 7. The test run was executed by incrementing the step 1 dimension at a time from N= 8 to N = 100, on each iteration the results are stored in memory and passed to the process on commencement of each step. The intention is to evaluate how long it would take to obtain a solution for N = 100 having started with a basic level of seed information. The result of tests showed that it was possible to obtain a first valid solution in only 240,899 evaluations. By comparison in the work by Sarkar and Nag \cite{Adaptive}, their GA achieved a first result for N = 25 after 281,000 evaluations in 281 iterations. The algorithm discussed in that paper used a GA with 1,000 nodes each evaluated once per iteration. The results achieved by using the seeded approach required only 33,146 evaluations at N = 25.
+
+In the work by Thada and Dhaka \cite{Performance} the proposed GA approach required 15.54 seconds to locate an initial set of solutions for N = 50 and their backtracking algorithm was unable to locate a solution. Although it is difficult to compare performances in time due to the variations in hardware used, the algorithm proposed here achieved a solution for the same dimensions in under 4 seconds on a single threaded Python implementation. Results from \cite{Performance} indicate that 10 solutions for N = 10 were located in 8.879 seconds whereas the seeded algorithm generated 100 valid sequences in 2.01 seconds.
 
 \begin{figure}[!htbp]
 	\centering	
@@ -250,9 +252,14 @@ Results for each dimension are based up on the values obtained at a lower dimens
 	\caption{Development of the number of evaluations required to obtain a solution for N = 100.}
 \end{figure}
 
-
 \section{Conclusions}
-This research has shown that 
+This research has shown that the use of predetermined results from evaluations at lower values for N can greatly improve the performance of a Genetic Algorithm in locating correct sequences to resolve the N Queens problem. In comparison against some recent research in to the use of GAs to solve the puzzle, this technique can be seen to show significant performance improvements. 
+
+Currently, the technique described uses the results of N-1 to seed the search algorithm for N. This is restrictive at higher values for N as it requires a process to go through each value up to N. Further work could be conducted to investigate whether a process of "tiling" lower dimension results together would allow for a similar performance to be achieved with larger jumps between values of N. The investigation would consider the potential for using 2 sets of results at N = 10 to rapidly locate sequences for N = 20. Potentially a "tiling" technique would dramatically improve the performance for values at N = 1,000 and above.
+
+An alternate area for future enhancements would be to investigate the use of a multi-threaded implementation either through running each Deme asynchronously or multiple values at N simultaneously with a separate thread per dimension with results from lower dimensional threads feeding a result source for higher dimensionalities.
+
+An issue that is apparent from the use of a GA to resolve the NQueens problem is that there is a limitation on the number of results that kept in memory. The GA implementation is inherently a stochastic process which requires a record of previously found locations to be kept to prevent multiple recordings of the same location. As the values for N increases the number of valid results grows exponentially, the known number of results for N = 26 is 22,317,699,616,364,000. Storing this amount of results in a lookup table, to ensure that duplicate results are not recorded, is unachievable. In order to further expand the use of a GA approach to resolving problems of this nature a technique would need to be devised to circumvent this issue. One possibility would be to segment the search space and restrict the GA to one segment at a time such that only the results for that segment need be held at a time.
 
 \begin{thebibliography}{99.}
 
@@ -274,15 +281,21 @@ This research has shown that
 
 \bibitem{PSO}  Y. Wang, H. Lin, L. Yang (2012) "Swarm Refinement PSO for Solving N-Queens problem" Third International Conference on Bio-Inspired Computing and Applications. Kaoshiung 2012
 
-\bibitem{Deadlock} M.M. Tanik, A graph model for deadlock prevention, Ph.D. Thesis, Texas A and M University, 1978
+\bibitem{Deadlock} M.M. Tanik, (1978) A graph model for deadlock prevention, Ph.D. Thesis, Texas A and M University, 1978
 
-\bibitem{SIMD} M. M. Tanik, Parallel memory Allocation and Data Alignment in SIMD Machines, Parallel Algorithms and Applications, 1994
+\bibitem{SIMD} M. M. Tanik, (1994) Parallel memory Allocation and Data Alignment in SIMD Machines, Parallel Algorithms and Applications, 1994
 
 \bibitem{Circulant} M. M. Tanik, A Circulant Matrix Based Approach to Storage Schemes for Parallel Memory Systems,  in: Proceedings of the Fifth IEEE Symposium on Parallel and Distributed Processing
 
 \bibitem{WSN} B. Stojkoska, D. Davcev, V. Trajkovik N-Queens based Algorithm for Moving Object Detection in Wireless Sensor Networks
 
-\bibitem{Quantum} V> Torggler, P. Aumann, H. Ritsch, W. Lechner A Quantum N-Queens Solver (2018) 	arXiv:1803.00735 
+\bibitem{Quantum} V. Torggler, P. Aumann, H. Ritsch, W. Lechner (2018) A Quantum N-Queens Solver arXiv:1803.00735 
+
+\bibitem{Adaptive} U. Sarkar, S. Nag (2018) An Adaptive Genetic Algorithm for Solving NQueens Problem CoRR, abs/1802.02006.
+
+\bibitem{Polynomial} R. Sosic, J. Gu (1990) A Polynomial Time Algorithm for the N-Queens Problem. SIGART Bulletin, Vol. 1, 3, pp. 7-11
+
+\bibitem{Performance} V. Thada, S. Dhaka (2014) Performance Analysis of N-Queen Problem using Backtracking and Genetic Algorithm Techniques. International journal of Computer Applications Vol 102, No. 7
 
 
 \end{thebibliography}

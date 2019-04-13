@@ -151,3 +151,7 @@ venv.bak/
 /NQueens/5output.txt
 /NQueens/7output.txt
 /**/*Output.txt
+/Documentation/Dominic/DRoberts_NQueens.tex
+/Documentation/Dominic/DRoberts_NQueens.aux
+/Documentation/Dominic/DRoberts_NQueens.out
+/Documentation/Dominic/DRoberts_NQueens.synctex.gz

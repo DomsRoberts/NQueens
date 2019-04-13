@@ -168,6 +168,15 @@ SEQUENCES = {
                                   3029242658210, 28439272956934,
                                   275986683743434, 2789712466510289,
                                   29363495934315694]],
+            # n-Queens fundamental numbers; n=1 (https://oeis.org/A002562)
+            "n4QueensFundamental": [4,
+                                  [1, 2, 1, 6, 12, 46, 92, 341, 1787,
+                                  9233, 45752, 285053, 1846955, 11977939,
+                                  83263591, 621012754, 4878666808,
+                                  39333324973, 336376244042,
+                                  3029242658210, 28439272956934,
+                                  275986683743434, 2789712466510289,
+                                  29363495934315694]],
             # n-Queens fundamental numbers; n=0 (https://oeis.org/A000170)
             "nQueensAll": [0,
                           [1, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200,
@@ -204,15 +213,62 @@ def pdiv(numerator, denominator):
 
 def pfac(value):
     '''
-    Protected division; protect against potential divide by zero errors.
+    Protected factorial.
     Params:
-        numerator   - individual object; individual to be tested.
-        denominator - integer number list; terms to match.
+        value - integer value to have factorial applied to.
 	Returns:
-    	Division result or 0 if denominator is 0.
+    	The factorial value.
     '''
-    if value == int and value < 50 and value > 0:
+    value = round(value)
+    if value >= 0 and value <= 10:
         retval = math.factorial(value)
+    else:
+        retval = 0
+    return retval
+
+def p2pow(value):
+    '''
+    Protected 2^n; 2 to the power of n.
+    Params:
+        value - integer power value.
+	Returns:
+    	The result of 2^n.
+    '''
+    if value >= -50 and value <= 50:
+        retval = math.pow(2.0, value)
+    else:
+        retval = 0
+    return retval
+
+def ppow2(value):
+    '''
+    Protected n^2; n to the power of 2.
+    Params:
+        value - integer power value.
+	Returns:
+    	The result of n^2.
+    '''
+    if value >= -10000000 and value <= 10000000:
+        retval = math.pow(value, 2.0)
+    else:
+        retval = 0
+    return retval
+
+def pprime(value):
+    '''
+    Protected prime number.
+    Params:
+        value - the nth value of the prime to be returned.
+	Returns:
+    	Equivalent prime number.
+    '''
+    pstart = SEQUENCES["Prime"][0]
+    plen = len(SEQUENCES["Prime"][1])
+    value = int(round(value))
+    if value >= pstart and value < (pstart + plen):
+        # Note the list of primes starts from 0, so adjust accordingly.
+        value = value - pstart
+        retval = SEQUENCES["Prime"][1][value]
     else:
         retval = 0
     return retval
@@ -245,6 +301,41 @@ class CIntegerSequenceGp:
         self.maxterms = mterms
         self.psize = popsize
         self.generations = gens
+        # Where n is the function index to the integer sequence.
+        # Keep track of n for the sequence product and sum calculations
+        self.n = self.start
+
+    def seqsum(self, value):
+        '''
+        Primitive to sum the sequence up to the current value of self.n.
+        Params:
+            value - discarded.
+    	Returns:
+        	Sum of the current sequence.
+        '''
+        value = int(value)
+        if value >= self.start and value <= self.n:
+            end = value - self.start
+            result = math.fsum(self.slist[:end])
+        else:
+            result = 0
+        return result
+
+    def seqprod(self, value):
+        '''
+        Primitive to multiple the sequence up to the current value of self.n.
+        Params:
+            value - discarded.
+    	Returns:
+        	Product of the current sequence.
+        '''
+        value = int(value)
+        if value >= self.start and value <= self.n:
+            end = value - self.start
+            result = float(numpy.prod(self.slist[:end]))
+        else:
+            result = 0
+        return result
 
     def configure_primitives(self):
         '''
@@ -263,12 +354,17 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.sub, [float, float], float)
         self.pset.addPrimitive(operator.mul, [float, float], float)
         self.pset.addPrimitive(pdiv, [float, float], float)
-#        self.pset.addPrimitive(pfac, [int], float)
+#        self.pset.addPrimitive(pfac, [float], float)
+        self.pset.addPrimitive(pprime, [float], float)
+        self.pset.addPrimitive(p2pow, [float], float)
+        self.pset.addPrimitive(ppow2, [float], float)
+        self.pset.addPrimitive(self.seqsum, [float], float)
+        self.pset.addPrimitive(self.seqprod, [float], float)
 
-        self.pset.addPrimitive(operator.abs, [float], float)
-        self.pset.addPrimitive(operator.neg, [float], float)
-        self.pset.addPrimitive(math.cos, [float], float)
-        self.pset.addPrimitive(math.sin, [float], float)
+        #        self.pset.addPrimitive(operator.abs, [float], float)
+#        self.pset.addPrimitive(operator.neg, [float], float)
+#        self.pset.addPrimitive(math.cos, [float], float)
+#        self.pset.addPrimitive(math.sin, [float], float)
 #        self.pset.addPrimitive(round, [float], int)
 
         self.pset.addPrimitive(operator.lt, [float, float], bool)
@@ -281,13 +377,12 @@ class CIntegerSequenceGp:
         # value is determined when it is inserted in the tree and never
         # changes unless it is replaced by another ephemeral constant.
         self.pset.addEphemeralConstant("rand101",
-                                       lambda: random.randint(-1, 1), float)
-        self.pset.addTerminal(math.pi, float, "pi")
+                                       lambda: random.randint(-10, 10), float)
+#        self.pset.addTerminal(math.pi, float, "pi")
         self.pset.addTerminal(False, bool)
         self.pset.addTerminal(True, bool)
         # We only have one input argument 'n' indexing the current integer in
         # the sequence.
-# TODO: What about 3 inputs: n, n + 1, n + 2?
         self.pset.renameArguments(ARG0='n')
 
     def configure_toolbox(self):
@@ -380,20 +475,24 @@ class CIntegerSequenceGp:
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         size = len(points)
+# TODO: this selection needs to be moved to the main function -> obj.init()
         gof_method = {"mse": True, "chisq": False, "gtest": False}
         try:
             # Calculate the Mean Square Error (mse)
             if gof_method["mse"]:
-                mse = ((func(n) - val) ** 2 for n, val in
-                       enumerate(points, start=self.start))
+                mse = []
+                for self.n, val in enumerate(points, start=self.start):
+                    mse.append(((func(self.n) - val) ** 2))
                 result = math.fsum(mse) / size
             # Calculate the Pearson Chi-squared value.
             # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
             elif gof_method["chisq"]:
+# TODO: update inline with mse method... so as add product and sum of n
                 chisq = ((((func(n) - val) ** 2) / val) for n, val in
                         enumerate(points, start=self.start))
                 result = math.fabs(math.fsum(chisq))
             elif gof_method["gtest"]:
+# TODO: update inline with mse method... so as add product and sum of n
                 gtest = ((math.log(func(n) / val) * func(n)) for n, val in
                          enumerate(points, start=self.start))
                 result = 2 * math.fsum(gtest)

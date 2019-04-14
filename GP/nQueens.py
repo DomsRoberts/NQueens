@@ -254,6 +254,20 @@ def ppow2(value):
         retval = 0
     return retval
 
+def psqrt(value):
+    '''
+    Protected square root.
+    Params:
+        value - integer power value.
+	Returns:
+    	The square root of the value.
+    '''
+    if value > 0:
+        retval = math.sqrt(value)
+    else:
+        retval = 0
+    return retval
+
 def pprime(value):
     '''
     Protected prime number.
@@ -358,6 +372,7 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(pprime, [float], float)
         self.pset.addPrimitive(p2pow, [float], float)
         self.pset.addPrimitive(ppow2, [float], float)
+        self.pset.addPrimitive(psqrt, [float], float)
         self.pset.addPrimitive(self.seqsum, [float], float)
         self.pset.addPrimitive(self.seqprod, [float], float)
 
@@ -588,10 +603,11 @@ class CIntegerSequenceGp:
             result = ", ".join(map(str, self.rlist))
             print("\nCalculated result: {}".format(result))
             # Let the user know how it went.
+            print("-" * 80)
             if self.rlist == self.slist:
-                print("Successfully calculated the Integer Sequence.")
+                print("\nSuccessfully calculated the Integer Sequence.")
             else:
-                print("Unsuccessfull in calculating the Integer Sequence.")
+                print("\nUnsuccessfull in calculating the Integer Sequence.")
             # Display the individual
             print('\nBest individual : ', self.expr)
             # Display the resultant equation from the best individual

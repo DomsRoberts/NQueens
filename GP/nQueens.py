@@ -306,6 +306,8 @@ class CIntegerSequenceGp:
     '''
     Integer sequence Genetic Program using the DEAP module library.
     '''
+    gof_method = {"mse": False, "chisq": False, "gtest": True}
+
     def __init__(self, intseq, mterms, popsize, gens):
         # Assign the Integer Sequence name, n start value and the associated
         # list contents from the passed in intseq name string.
@@ -490,29 +492,29 @@ class CIntegerSequenceGp:
         # Evaluate the mean squared error between the expression
 	    # and the recorded Integer Sequence values.
         size = len(points)
-# TODO: this selection needs to be moved to the main function -> obj.init()
-        gof_method = {"mse": True, "chisq": False, "gtest": False}
         try:
-            # Calculate the Mean Square Error (mse)
-            if gof_method["mse"]:
-                mse = []
+            error = []
+            if self.gof_method["mse"]:
                 for self.n, val in enumerate(points, start=self.start):
-                    mse.append(((func(self.n) - val) ** 2))
-                result = math.fsum(mse) / size
+                    calc = (func(self.n) - val) ** 2
+                    error.append(calc)
+                result = math.fsum(error) / size
             # Calculate the Pearson Chi-squared value.
             # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
-            elif gof_method["chisq"]:
-# TODO: update inline with mse method... so as add product and sum of n
-                chisq = ((((func(n) - val) ** 2) / val) for n, val in
-                        enumerate(points, start=self.start))
-                result = math.fabs(math.fsum(chisq))
-            elif gof_method["gtest"]:
-# TODO: update inline with mse method... so as add product and sum of n
-                gtest = ((math.log(func(n) / val) * func(n)) for n, val in
-                         enumerate(points, start=self.start))
-                result = 2 * math.fsum(gtest)
+            elif self.gof_method["chisq"]:
+                for self.n, val in enumerate(points, start=self.start):
+                    calc = math.fabs(((func(self.n) - val) ** 2) / val)
+                    error.append(calc)
+                result = math.fabs(math.fsum(error) / size)
+            elif self.gof_method["gtest"]:
+                for self.n, val in enumerate(points, start=self.start):
+                    calc = math.fabs(math.log(func(self.n) / val) * func(self.n))
+                    error.append(calc)
+                result = 2 * (math.fsum(error) / size)
+            else:
+                result = float('Inf')
         except Exception as ex:
-            result = 1000000.0
+            result = float('Inf')
         return result,
 
     def set_population(self):
@@ -561,15 +563,6 @@ class CIntegerSequenceGp:
                                        stats=self.mstats,
                                        halloffame=self.hof,
                                        verbose=True)
-# TODO: NEED TO INVESTIGATE THESE OTHER METHODS...
-#        pop, log = gp.harm(pop, toolbox,
-#                           MATING_RATE, MUTATION_RATE,
-#                           self.generations,
-#                           alpha=0.05, beta=10,
-#                           gamma=0.25, rho=0.9,
-#                           stats=self.mstats,
-#                           halloffame=self.hof,
-#                           verbose=True)
         # Was the DEAP GP successful?
         if self.hof.items:
             # Transform the tree expression in a callable function

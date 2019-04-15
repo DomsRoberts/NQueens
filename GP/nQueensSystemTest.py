@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2019 David Kind
@@ -42,14 +43,9 @@ __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 SCRIPTNAME = os.path.basename(sys.argv[0])
 SCRIPTINFO = "{} version: {}, {}".format(SCRIPTNAME, __version__, __date__)
 
-
-def main():
+def test_script():
     '''
-    System test code.
-    Params:
-        N/A
-    Returns:
-        N/A
+    Tests the main nQueens.py  script.
     '''
     integer_sequence = [*nQueens.SEQUENCES]
     integer_sequence = integer_sequence[0]
@@ -61,6 +57,102 @@ def main():
                  maximum_number_of_terms,
                  ga_population_size,
                  ga_number_of_generations)
+
+
+def test_primes():
+    '''
+    Tests nQueens.py script function.
+    '''
+    integer_sequence = [*nQueens.SEQUENCES['Prime']]
+    pstart = integer_sequence[0]
+    plen = len(integer_sequence[1])
+    pend = pstart + plen
+    for n in range(0, (pend + 1)):
+        print("P{} = {}".format(n, nQueens.pprime(n)))
+
+def test_seqsum():
+    '''
+    Tests nQueens.py script class seqsum() funtion.
+    '''
+    integer_sequence = [*nQueens.SEQUENCES['Prime']]
+    sequence = "Prime"
+    maxterms = 8
+    psize = 300
+    generations = 50
+    # Initialise the random module and seed with the current time.
+    # Note: uses the current time by default if left empty.
+    random.seed()
+    # Create our Integer Sequence object and initialise it
+    isgp = nQueens.CIntegerSequenceGp(sequence, maxterms, psize, generations)
+    # Configure the DEAP GP objects
+    isgp.configure_primitives()
+    isgp.configure_toolbox()
+    isgp.set_population()
+    isgp.config_statistics()
+    # Have configured the object, so we're now ready to test seqsum()
+    suceeded = True
+    idx = isgp.start
+    for n in range(100):
+        isgp.n = idx + n
+        if isgp.seqsum() != math.fsum(integer_sequence[1][:n]):
+            suceeded = False
+            break
+    if suceeded:
+        print("test_seqsum() successfully tested.")
+    else:
+        print("test_seqsum() FAILED.")
+
+def test_seqn1():
+    '''
+    Tests nQueens.py script class seqsum() funtion.
+    '''
+    integer_sequence = [*nQueens.SEQUENCES['Prime']]
+    sequence = "Prime"
+    maxterms = 8
+    psize = 300
+    generations = 50
+    # Initialise the random module and seed with the current time.
+    # Note: uses the current time by default if left empty.
+    random.seed()
+    # Create our Integer Sequence object and initialise it
+    isgp = nQueens.CIntegerSequenceGp(sequence, maxterms, psize, generations)
+    # Configure the DEAP GP objects
+    isgp.configure_primitives()
+    isgp.configure_toolbox()
+    isgp.set_population()
+    isgp.config_statistics()
+    # Have configured the object, so we're now ready to test seqsum()
+    suceeded = True
+    for isgp.n in range(isgp.start, len(integer_sequence[1])):
+        result = isgp.seq_n1()
+        expected = float(integer_sequence[1][isgp.n - isgp.start - 1])
+        if isgp.n == isgp.start:
+            if result != 0:
+                print("Should have returned zero.")
+                suceeded = False
+                break
+        elif result != expected:
+            print("Got {}, but expected {}".format(result, expected))
+            suceeded = False
+            break
+    if suceeded:
+        print("test_seqn1() successfully tested.")
+    else:
+        print("test_seqn1() FAILED.")
+
+
+def main():
+    '''
+    System test code.
+    Params:
+        N/A
+    Returns:
+        N/A
+    '''
+#    test_script()
+#    test_primes()
+#    test_seqsum()
+    test_seqn1()
 
 
 if __name__ == "__main__":

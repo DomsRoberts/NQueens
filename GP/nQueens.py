@@ -268,6 +268,23 @@ def psqrt(value):
         retval = 0
     return retval
 
+def pmod(numerator, denominator):
+    '''
+    Protected Modulo arithmetic. The modulo operation finds the remainder after
+    division of one number by another.
+    Params:
+        numerator   - individual object; individual to be tested.
+        denominator - integer number list; terms to match.
+	Returns:
+    	Division result or 0 if denominator is 0.
+    '''
+    if denominator:
+        retval = numerator % denominator
+    else:
+        retval = 0
+    return retval
+
+
 def pprime(value):
     '''
     Protected prime number.
@@ -306,7 +323,8 @@ class CIntegerSequenceGp:
     '''
     Integer sequence Genetic Program using the DEAP module library.
     '''
-    gof_method = {"mse": False, "chisq": False, "gtest": True}
+#    gof_method = {"mse": False, "chisq": True, "gtest": False}
+    gof_method = {"mse": True, "chisq": False, "gtest": False}
 
     def __init__(self, intseq, mterms, popsize, gens):
         # Assign the Integer Sequence name, n start value and the associated
@@ -320,6 +338,12 @@ class CIntegerSequenceGp:
         # Where n is the function index to the integer sequence.
         # Keep track of n for the sequence product and sum calculations
         self.n = self.start
+        # Calculate the Greatest Common Divisor (GCD), used a constant
+        # terminal value.
+        self.gcd = self.slist[0]
+        for i in range(1, len(self.slist)):
+            self.gcd = math.gcd(self.gcd, self.slist[i])
+        self.gcd = float(self.gcd)
 
     def seqsum(self, value):
         '''
@@ -353,6 +377,36 @@ class CIntegerSequenceGp:
             result = 0
         return result
 
+    def seq_n1(self):
+        '''
+        Retrieves the sequence value for [n - 1] or zero if not available.
+        Params:
+            n/a
+        Returns:
+            Previous sequence value.
+        '''
+        if self.n > self.start:
+            idx = self.n - self.start - 1
+            result = self.slist[idx]
+        else:
+            result = 0
+        return float(result)
+
+    def seq_n2(self):
+        '''
+        Retrieves the sequence value for [n - 2] or zero if not available.
+        Params:
+            n/a
+        Returns:
+            Previous sequence value.
+        '''
+        if self.n > self.start + 1:
+            idx = self.n - self.start - 2
+            result = self.slist[idx]
+        else:
+            result = 0
+        return float(result)
+
     def configure_primitives(self):
         '''
         Initialise the primitive set with the required mathematical operations
@@ -370,15 +424,17 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(operator.sub, [float, float], float)
         self.pset.addPrimitive(operator.mul, [float, float], float)
         self.pset.addPrimitive(pdiv, [float, float], float)
-#        self.pset.addPrimitive(pfac, [float], float)
+        self.pset.addPrimitive(pfac, [float], float)
         self.pset.addPrimitive(pprime, [float], float)
         self.pset.addPrimitive(p2pow, [float], float)
         self.pset.addPrimitive(ppow2, [float], float)
         self.pset.addPrimitive(psqrt, [float], float)
+        self.pset.addPrimitive(pmod, [float, float], float)
+
         self.pset.addPrimitive(self.seqsum, [float], float)
         self.pset.addPrimitive(self.seqprod, [float], float)
 
-        #        self.pset.addPrimitive(operator.abs, [float], float)
+#        self.pset.addPrimitive(operator.abs, [float], float)
 #        self.pset.addPrimitive(operator.neg, [float], float)
 #        self.pset.addPrimitive(math.cos, [float], float)
 #        self.pset.addPrimitive(math.sin, [float], float)
@@ -396,6 +452,9 @@ class CIntegerSequenceGp:
         self.pset.addEphemeralConstant("rand101",
                                        lambda: random.randint(-10, 10), float)
 #        self.pset.addTerminal(math.pi, float, "pi")
+        self.pset.addTerminal(self.seq_n1, float) # Sequence[n - 1] value
+        self.pset.addTerminal(self.seq_n2, float) # Sequence[n - 2] value
+        self.pset.addTerminal(self.gcd, float)    # Greatest Common Divisor
         self.pset.addTerminal(False, bool)
         self.pset.addTerminal(True, bool)
         # We only have one input argument 'n' indexing the current integer in
@@ -494,23 +553,37 @@ class CIntegerSequenceGp:
         size = len(points)
         try:
             error = []
+##### TODO: Google the non-linear equivalent to the MSE value.............
+##### TODO: Google the non-linear equivalent to the MSE value.............
+##### TODO: Google the non-linear equivalent to the MSE value.............
+##### TODO: Google the non-linear equivalent to the MSE value.............
             if self.gof_method["mse"]:
                 for self.n, val in enumerate(points, start=self.start):
-                    calc = (func(self.n) - val) ** 2
+                    fval = func(self.n)
+                    calc = (fval - val) ** 2
                     error.append(calc)
                 result = math.fsum(error) / size
             # Calculate the Pearson Chi-squared value.
             # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
             elif self.gof_method["chisq"]:
                 for self.n, val in enumerate(points, start=self.start):
-                    calc = math.fabs(((func(self.n) - val) ** 2) / val)
+                    calc = ((func(self.n) - val) ** 2) / val
                     error.append(calc)
-                result = math.fabs(math.fsum(error) / size)
+                print(error)  #### TODO: remove me:
+#                result = math.fabs(math.fsum(error) / size)
+                result = math.fsum(error)
+                print("result={}\n".format(result))  #### TODO: remove me:
+            # Calculate the G-Test
+            # https://en.wikipedia.org/wiki/G-test
             elif self.gof_method["gtest"]:
                 for self.n, val in enumerate(points, start=self.start):
-                    calc = math.fabs(math.log(func(self.n) / val) * func(self.n))
+                    fval = func(self.n)
+                    calc = math.fabs(math.log(fval / val) * fval)
                     error.append(calc)
-                result = 2 * (math.fsum(error) / size)
+                print(error)                            #### TODO: remove me:
+#                result = 2 * (math.fsum(error) / size)
+                result = 2 * math.fsum(error)
+                print("result={}\n".format(result))     #### TODO: remove me:
             else:
                 result = float('Inf')
         except Exception as ex:

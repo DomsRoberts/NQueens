@@ -284,6 +284,35 @@ def pmod(numerator, denominator):
         retval = 0
     return retval
 
+def plog(value):
+    '''
+    Protected Log arithmetic.
+    Params:
+        value - value to have arithmetic performed on it.
+	Returns:
+    	Log of the value.
+    '''
+    if value > 0:
+        retval = math.log(value)
+    else:
+        retval = 0
+    return retval
+
+def pnpowval(idx,value):
+    '''
+    Protected prime number.
+    Params:
+        idx   - the nth value.
+        value - the power, so that n^value.
+	Returns:
+    	Result of idx^value.
+    '''
+    idx = int(round(idx))
+    if idx >= 0 and idx <= 10:
+        retval = math.pow(idx, value)
+    else:
+        retval = 0
+    return retval
 
 def pprime(value):
     '''
@@ -426,10 +455,12 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(pdiv, [float, float], float)
         self.pset.addPrimitive(pfac, [float], float)
         self.pset.addPrimitive(pprime, [float], float)
-        self.pset.addPrimitive(p2pow, [float], float)
-        self.pset.addPrimitive(ppow2, [float], float)
+#        self.pset.addPrimitive(p2pow, [float], float)
+#        self.pset.addPrimitive(ppow2, [float], float)
+        self.pset.addPrimitive(pnpowval, [float], float)
         self.pset.addPrimitive(psqrt, [float], float)
         self.pset.addPrimitive(pmod, [float, float], float)
+        self.pset.addPrimitive(plog, [float], float)
 
         self.pset.addPrimitive(self.seqsum, [float], float)
         self.pset.addPrimitive(self.seqprod, [float], float)

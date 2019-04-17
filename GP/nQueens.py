@@ -64,7 +64,7 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
 
 __author__ = 'David Kind'
-__date__ = '05-04-2019'
+__date__ = '17-04-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 

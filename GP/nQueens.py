@@ -352,9 +352,6 @@ class CIntegerSequenceGp:
     '''
     Integer sequence Genetic Program using the DEAP module library.
     '''
-#    gof_method = {"mse": False, "chisq": True, "gtest": False}
-    gof_method = {"mse": True, "chisq": False, "gtest": False}
-
     def __init__(self, intseq, mterms, popsize, gens):
         # Assign the Integer Sequence name, n start value and the associated
         # list contents from the passed in intseq name string.
@@ -462,8 +459,8 @@ class CIntegerSequenceGp:
         self.pset.addPrimitive(pmod, [float, float], float)
         self.pset.addPrimitive(plog, [float], float)
 
-        self.pset.addPrimitive(self.seqsum, [float], float)
-        self.pset.addPrimitive(self.seqprod, [float], float)
+#        self.pset.addPrimitive(self.seqsum, [float], float)
+#        self.pset.addPrimitive(self.seqprod, [float], float)
 
 #        self.pset.addPrimitive(operator.abs, [float], float)
 #        self.pset.addPrimitive(operator.neg, [float], float)
@@ -584,39 +581,11 @@ class CIntegerSequenceGp:
         size = len(points)
         try:
             error = []
-##### TODO: Google the non-linear equivalent to the MSE value.............
-##### TODO: Google the non-linear equivalent to the MSE value.............
-##### TODO: Google the non-linear equivalent to the MSE value.............
-##### TODO: Google the non-linear equivalent to the MSE value.............
-            if self.gof_method["mse"]:
-                for self.n, val in enumerate(points, start=self.start):
-                    fval = func(self.n)
-                    calc = (fval - val) ** 2
-                    error.append(calc)
-                result = math.fsum(error) / size
-            # Calculate the Pearson Chi-squared value.
-            # https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test
-            elif self.gof_method["chisq"]:
-                for self.n, val in enumerate(points, start=self.start):
-                    calc = ((func(self.n) - val) ** 2) / val
-                    error.append(calc)
-                print(error)  #### TODO: remove me:
-#                result = math.fabs(math.fsum(error) / size)
-                result = math.fsum(error)
-                print("result={}\n".format(result))  #### TODO: remove me:
-            # Calculate the G-Test
-            # https://en.wikipedia.org/wiki/G-test
-            elif self.gof_method["gtest"]:
-                for self.n, val in enumerate(points, start=self.start):
-                    fval = func(self.n)
-                    calc = math.fabs(math.log(fval / val) * fval)
-                    error.append(calc)
-                print(error)                            #### TODO: remove me:
-#                result = 2 * (math.fsum(error) / size)
-                result = 2 * math.fsum(error)
-                print("result={}\n".format(result))     #### TODO: remove me:
-            else:
-                result = float('Inf')
+            for self.n, val in enumerate(points, start=self.start):
+                fval = func(self.n)
+                calc = (fval - val) ** 2
+                error.append(calc)
+            result = math.fsum(error) / size
         except Exception as ex:
             result = float('Inf')
         return result,

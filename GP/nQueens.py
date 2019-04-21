@@ -19,7 +19,8 @@
 
 '''
 The n-Queens problem is an age old problem first published by Max Bezzel in 1848
-who first wrote about placing 8 Queens on an 8 x 8 chess board so that none of
+who first wrote about placing 8 Queens on an 8 x 8 chess P1524board so that
+none of
 the Queens were able to attack each other. This problem was later extended to
 n-Queens on an n x n chessboard by Franz Nauck in 1850. While the concept may
 sound simple, the problem is prohibitively computationally expensive as n
@@ -27,7 +28,6 @@ increases in size; where n >= 1 integer. The number of solutions to the n-Queens
 problem, fundamental and all solutions, are integer sequences. This Genetic
 Program attempts to solve the n-Queens integer sequences by inductively creating
 an equation using the tree method.
-
 Shell execution examples:
     py -3 nQueens.py Natural 8 300 50
 Running the GP:
@@ -35,7 +35,6 @@ Running the GP:
     > with a maximum number of 8 terms from the sequence to check;
     > with a population of 300;
     > over 50 generations
-
     py -3 nQueens.py Prime 8 300 50 --round
 Running the GP:
     > against the Prime Number sequence;
@@ -43,7 +42,6 @@ Running the GP:
     > with a population of 300;
     > over 50 generations
     > rounding the resultant number sequence
-
 Note: this script has been developed to use Python 3.
 '''
 
@@ -67,8 +65,8 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
 
 __author__ = 'David Kind'
-__date__ = '05-04-2019'
-__version__ = '1.0'
+__date__ = '20-04-2019'
+__version__ = '1.1'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
 #
@@ -171,9 +169,26 @@ SEQUENCES = {
                                   3029242658210, 28439272956934,
                                   275986683743434, 2789712466510289,
                                   29363495934315694]],
+            # n-Queens fundamental numbers; n=1 (https://oeis.org/A002562)
+            "n4QueensFundamental": [4,
+                                  [1, 2, 1, 6, 12, 46, 92, 341, 1787,
+                                  9233, 45752, 285053, 1846955, 11977939,
+                                  83263591, 621012754, 4878666808,
+                                  39333324973, 336376244042,
+                                  3029242658210, 28439272956934,
+                                  275986683743434, 2789712466510289,
+                                  29363495934315694]],
             # n-Queens fundamental numbers; n=0 (https://oeis.org/A000170)
             "nQueensAll": [0,
                           [1, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200,
+                          73712, 365596, 2279184, 14772512, 95815104,
+                          666090624, 4968057848, 39029188884, 314666222712,
+                          2691008701644, 24233937684440, 227514171973736,
+                          2207893435808352, 22317699616364044,
+                          234907967154122528]],
+            # n-Queens fundamental numbers; n=0 (https://oeis.org/A000170)
+            "n4QueensAll": [4,
+                          [2, 10, 4, 40, 92, 352, 724, 2680, 14200,
                           73712, 365596, 2279184, 14772512, 95815104,
                           666090624, 4968057848, 39029188884, 314666222712,
                           2691008701644, 24233937684440, 227514171973736,
@@ -199,15 +214,122 @@ def pdiv(numerator, denominator):
 
 def pfac(value):
     '''
-    Protected division; protect against potential divide by zero errors.
+    Protected factorial.
+    Params:
+        value - integer value to have factorial applied to.
+	Returns:
+    	The factorial value.
+    '''
+    value = round(value)
+    if value >= 0 and value <= 10:
+        retval = math.factorial(value)
+    else:
+        retval = 0
+    return retval
+
+def p2pow(value):
+    '''
+    Protected 2^n; 2 to the power of n.
+    Params:
+        value - integer power value.
+	Returns:
+    	The result of 2^n.
+    '''
+    if value >= -50 and value <= 50:
+        retval = math.pow(2.0, value)
+    else:
+        retval = 0
+    return retval
+
+def ppow2(value):
+    '''
+    Protected n^2; n to the power of 2.
+    Params:
+        value - integer power value.
+	Returns:
+    	The result of n^2.
+    '''
+    if value >= -10000000 and value <= 10000000:
+        retval = math.pow(value, 2.0)
+    else:
+        retval = 0
+    return retval
+
+def psqrt(value):
+    '''
+    Protected square root.
+    Params:
+        value - integer power value.
+	Returns:
+    	The square root of the value.
+    '''
+    if value > 0:
+        retval = math.sqrt(value)
+    else:
+        retval = 0
+    return retval
+
+def pmod(numerator, denominator):
+    '''
+    Protected Modulo arithmetic. The modulo operation finds the remainder after
+    division of one number by another.
     Params:
         numerator   - individual object; individual to be tested.
         denominator - integer number list; terms to match.
 	Returns:
     	Division result or 0 if denominator is 0.
     '''
-    if value == int and value < 50 and value > 0:
-        retval = math.factorial(value)
+    if denominator:
+        retval = numerator % denominator
+    else:
+        retval = 0
+    return retval
+
+def plog(value):
+    '''
+    Protected Log arithmetic.
+    Params:
+        value - value to have arithmetic performed on it.
+	Returns:
+    	Log of the value.
+    '''
+    if value > 0:
+        retval = math.log(value)
+    else:
+        retval = 0
+    return retval
+
+def pnpowval(idx,value):
+    '''
+    Protected prime number.
+    Params:
+        idx   - the nth value.
+        value - the power, so that n^value.
+	Returns:
+    	Result of idx^value.
+    '''
+    idx = int(round(idx))
+    if idx >= 0 and idx <= 10:
+        retval = math.pow(idx, value)
+    else:
+        retval = 0
+    return retval
+
+def pprime(value):
+    '''
+    Protected prime number.
+    Params:
+        value - the nth value of the prime to be returned.
+	Returns:
+    	Equivalent prime number.
+    '''
+    pstart = SEQUENCES["Prime"][0]
+    plen = len(SEQUENCES["Prime"][1])
+    value = int(round(value))
+    if value >= pstart and value < (pstart + plen):
+        # Note the list of primes starts from 0, so adjust accordingly.
+        value = value - pstart
+        retval = SEQUENCES["Prime"][1][value]
     else:
         retval = 0
     return retval
@@ -240,6 +362,77 @@ class CIntegerSequenceGp:
         self.maxterms = mterms
         self.psize = popsize
         self.generations = gens
+        # Where n is the function index to the integer sequence.
+        # Keep track of n for the sequence product and sum calculations
+        self.n = self.start
+        # Calculate the Greatest Common Divisor (GCD), used a constant
+        # terminal value.
+        self.gcd = self.slist[0]
+        for i in range(1, len(self.slist)):
+            self.gcd = math.gcd(self.gcd, self.slist[i])
+        self.gcd = float(self.gcd)
+
+    def seqsum(self, value):
+        '''
+        Primitive to sum the sequence up to the current value of self.n.
+        Params:
+            value - discarded.
+    	Returns:
+        	Sum of the current sequence.
+        '''
+        value = int(value)
+        if value >= self.start and value <= self.n:
+            end = value - self.start
+            result = math.fsum(self.slist[:end])
+        else:
+            result = 0
+        return result
+
+    def seqprod(self, value):
+        '''
+        Primitive to multiple the sequence up to the current value of self.n.
+        Params:
+            value - discarded.
+    	Returns:
+        	Product of the current sequence.
+        '''
+        value = int(value)
+        if value >= self.start and value <= self.n:
+            end = value - self.start
+            result = float(numpy.prod(self.slist[:end]))
+        else:
+            result = 0
+        return result
+
+    def seq_n1(self):
+        '''
+        Retrieves the sequence value for [n - 1] or zero if not available.
+        Params:
+            n/a
+        Returns:
+            Previous sequence value.
+        '''
+        if self.n > self.start:
+            idx = self.n - self.start - 1
+            result = self.slist[idx]
+        else:
+            result = 0
+        return float(result)
+
+    def seq_n2(self):
+        '''
+        Retrieves the sequence value for [n - 2] or zero if not available.
+        Params:
+            n/a
+        Returns:
+            Previous sequence value.
+        '''
+        if self.n > self.start + 1:
+            idx = self.n - self.start - 2
+            result = self.slist[idx]
+        else:
+            result = 0
+        return float(result)
 
     def configure_primitives(self):
         '''
@@ -251,26 +444,34 @@ class CIntegerSequenceGp:
         Returns:
             N/A
         '''
-# TODO: Example script adf_symbreg.py shows how you can specify different
-#       primitive sets and then cycle through them for test purposes.
-        self.pset = gp.PrimitiveSetTyped("MAIN", [int], int)
+        self.pset = gp.PrimitiveSetTyped("MAIN", [float], float)
 
         # Can now add the primitive operators
-        self.pset.addPrimitive(operator.add, [float, int], float)
-        self.pset.addPrimitive(operator.sub, [float, int], float)
-        self.pset.addPrimitive(operator.mul, [float, int], float)
-        self.pset.addPrimitive(pdiv, [float, int], float)
-        self.pset.addPrimitive(pfac, [int], int)
+        self.pset.addPrimitive(operator.add, [float, float], float)
+        self.pset.addPrimitive(operator.sub, [float, float], float)
+        self.pset.addPrimitive(operator.mul, [float, float], float)
+        self.pset.addPrimitive(pdiv, [float, float], float)
+        self.pset.addPrimitive(pfac, [float], float)
+        self.pset.addPrimitive(pprime, [float], float)
+#        self.pset.addPrimitive(p2pow, [float], float)
+#        self.pset.addPrimitive(ppow2, [float], float)
+        self.pset.addPrimitive(pnpowval, [float], float)
+        self.pset.addPrimitive(psqrt, [float], float)
+        self.pset.addPrimitive(pmod, [float, float], float)
+        self.pset.addPrimitive(plog, [float], float)
 
-        self.pset.addPrimitive(operator.abs, [float], float)
-        self.pset.addPrimitive(operator.neg, [float], float)
-        self.pset.addPrimitive(math.cos, [float], float)
-        self.pset.addPrimitive(math.sin, [float], float)
-        self.pset.addPrimitive(round, [float], int)
+#        self.pset.addPrimitive(self.seqsum, [float], float)
+#        self.pset.addPrimitive(self.seqprod, [float], float)
 
-        self.pset.addPrimitive(operator.lt, [float, int], bool)
-        self.pset.addPrimitive(operator.eq, [float, int], bool)
-        self.pset.addPrimitive(if_then_else, [bool, float, int], float)
+#        self.pset.addPrimitive(operator.abs, [float], float)
+#        self.pset.addPrimitive(operator.neg, [float], float)
+#        self.pset.addPrimitive(math.cos, [float], float)
+#        self.pset.addPrimitive(math.sin, [float], float)
+#        self.pset.addPrimitive(round, [float], int)
+
+        self.pset.addPrimitive(operator.lt, [float, float], bool)
+        self.pset.addPrimitive(operator.eq, [float, float], bool)
+        self.pset.addPrimitive(if_then_else, [bool, float, float], float)
 
         # Ref: DEAP 1.2.2 Documentation on Genetic Programming
         # An ephemeral constant is a terminal encapsulating a value that is
@@ -278,8 +479,11 @@ class CIntegerSequenceGp:
         # value is determined when it is inserted in the tree and never
         # changes unless it is replaced by another ephemeral constant.
         self.pset.addEphemeralConstant("rand101",
-                                       lambda: random.randint(-1, 1), int)
-        self.pset.addTerminal(math.pi, float, "pi")
+                                       lambda: random.randint(-10, 10), float)
+#        self.pset.addTerminal(math.pi, float, "pi")
+        self.pset.addTerminal(self.seq_n1, float) # Sequence[n - 1] value
+        self.pset.addTerminal(self.seq_n2, float) # Sequence[n - 2] value
+        self.pset.addTerminal(self.gcd, float)    # Greatest Common Divisor
         self.pset.addTerminal(False, bool)
         self.pset.addTerminal(True, bool)
         # We only have one input argument 'n' indexing the current integer in
@@ -319,10 +523,39 @@ class CIntegerSequenceGp:
         points = self.slist[:self.maxterms]
         self.toolbox.register("evaluate", self.eval_sequence, points=points)
         self.toolbox.register("select", tools.selTournament, tournsize=3)
-        self.toolbox.register("mate", gp.cxOnePoint)
-        self.toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
+        # Executes a one point crossover on the input sequence individuals.
+        # The two individuals are modified in place. The resulting
+        # individuals will respectively have the length of the other.
+#        self.toolbox.register("mate", gp.cxOnePoint)
+        # Randomly select crossover point in each individual and exchange
+        # each subtree with the point as root between each individual.
+        self.toolbox.register("mate", gp.cxOnePointLeafBiased, termpb=0.1)
+
+        # Generate an expression where each leaf has a the same depth between
+        # min and max.
+#        self.toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
+        # Generate an expression where each leaf might have a different depth
+        # between min and max.
+        self.toolbox.register("expr_mut", gp.genGrow, min_=0, max_=2)
+        # Generate an expression with a PrimitiveSet pset. Half the time,
+        # the expression is generated with genGrow(), the other half,
+        # the expression is generated with genFull().
+#        self.toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=2)
+
+        # Randomly select a point in the tree individual, then replace the
+        # subtree at that point as a root by the expression generated using
+        # method expr().
         self.toolbox.register("mutate", gp.mutUniform,
                               expr=self.toolbox.expr_mut, pset=self.pset)
+        # This operator shrinks the individual by chosing randomly a branch
+        # and replacing it with one of the branch’s arguments (also randomly
+        # chosen).
+#        self.toolbox.register("mutate", gp.mutShrink)
+        # Replaces a randomly chosen primitive from individual by a randomly
+        # chosen primitive with the same number of arguments from the pset
+        # attribute of the individual.
+#        self.toolbox.register("mutate", gp.mutNodeReplacement, pset=self.pset)
+
 
         self.toolbox.decorate("mate",
                               gp.staticLimit(key=operator.attrgetter("height"),
@@ -333,13 +566,14 @@ class CIntegerSequenceGp:
 
     def eval_sequence(self, individual, points):
         '''
-        Evaluate the individual's tree function on the values of 'n' and
-        report the mean squared error of doing so.
+        We are performing a GoF (Goodness-of-Fit) evaluation. There are
+        several methods for doing this and it is dependant on whether we are
+        regression testing linear or non-linear functions.
         Params:
             individual  - individual object; individual to be tested.
             points      - integer number list; terms to match.
         Returns:
-            Sum of the mean squared error to the required values of 'n'.
+            Result of the GoF test.
         '''
         # Transform the tree expression in a callable function
         func = self.toolbox.compile(expr=individual)
@@ -347,11 +581,15 @@ class CIntegerSequenceGp:
 	    # and the recorded Integer Sequence values.
         size = len(points)
         try:
-            sqerrors = ((func(n) - val) ** 2 for n, val in enumerate(points, start=self.start))
-            sqerrors = math.fsum(sqerrors) / size
+            error = []
+            for self.n, val in enumerate(points, start=self.start):
+                fval = func(self.n)
+                calc = (fval - val) ** 2
+                error.append(calc)
+            result = math.fsum(error) / size
         except Exception as ex:
-            sqerrors = 10.0
-        return sqerrors,
+            result = float('Inf')
+        return result,
 
     def set_population(self):
         '''
@@ -399,15 +637,6 @@ class CIntegerSequenceGp:
                                        stats=self.mstats,
                                        halloffame=self.hof,
                                        verbose=True)
-# TODO: NEED TO INVESTIGATE THESE OTHER METHODS...
-#        pop, log = gp.harm(pop, toolbox,
-#                           MATING_RATE, MUTATION_RATE,
-#                           self.generations,
-#                           alpha=0.05, beta=10,
-#                           gamma=0.25, rho=0.9,
-#                           stats=self.mstats,
-#                           halloffame=self.hof,
-#                           verbose=True)
         # Was the DEAP GP successful?
         if self.hof.items:
             # Transform the tree expression in a callable function
@@ -441,20 +670,19 @@ class CIntegerSequenceGp:
             result = ", ".join(map(str, self.rlist))
             print("\nCalculated result: {}".format(result))
             # Let the user know how it went.
+            print("-" * 80)
             if self.rlist == self.slist:
-                print("Successfully calculated the Integer Sequence.")
+                print("\nSuccessfully calculated the Integer Sequence.")
             else:
-                print("Unsuccessfull in calculating the Integer Sequence.")
+                print("\nUnsuccessfull in calculating the Integer Sequence.")
             # Display the individual
             print('\nBest individual : ', self.expr)
             # Display the resultant equation from the best individual
             tree = gp.PrimitiveTree(self.expr)
             str(tree)
 
-# TODO: Display the best individual => graph and equation.
-# TODO: Need to print out if we've been successful or not.
-# TODO: Need to dump out GP Tree of the HOF (Hall Of Fame)
-### TODO: Get this code up and running again; Windows / Linux check?!
+            # Display the best individual => graph and equation.
+            # Only works reliably on Linux Ubuntu.
             if sys.platform == 'linux' or sys.platform == 'linux2':
                 print("Running on Linux OS.")
                 nodes, edges, labels = gp.graph(self.expr)

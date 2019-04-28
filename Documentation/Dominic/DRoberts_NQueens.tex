@@ -1,15 +1,19 @@
-\documentclass[a4paper,onecolumn,11pt]{article}
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
 %%%%
 \renewcommand{\familydefault}{\sfdefault}%
 %%%
 
 %Packages%%%%%%%%%%%%%%%%%%%%
+\usepackage{cite}
 \usepackage[margin=2cm]{geometry} %this assures 2cm margin on all sides
 \usepackage{graphicx}% to include figures
 \usepackage{array}%
 \usepackage{hyperref}
 \usepackage{listings}
-\hypersetup{linkcolor=blue, pdftitle={Quantifying Software Quality through Data Change Validation}, pdfauthor={Dominic Roberts}, pdfsubject={Research Proposal Assignment -- January 2018}, pdfkeywords={software quality, software testing, mutation testing, genetic algorithms} }
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\hypersetup{linkcolor=blue, pdftitle={Solving the NQueens problem with Genetic Algorithms seeded by lower dimension results}, pdfauthor={Dominic Roberts}, pdfsubject={Research Proposal Assignment -- January 2018}, pdfkeywords={software quality, software testing, mutation testing, genetic algorithms} }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%DOUBLE QUOTE and SINGLE QUOTE Commands%
 \newcommand{\qq}[1]{\textquotedblleft#1\textquotedblright}%
@@ -18,18 +22,25 @@
 %\setcounter{page}{-1}%
 \begin{document}
 \title{\vspace{-2.5cm}Solving the NQueens problem with Genetic Algorithms seeded by lower dimension results}
-\author{\textbf{Dominic Roberts}\\
-\textbf{P17201056}\\
-MSc Intelligent Systems, De Montfort University
-}%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author{
+\IEEEauthorblockN{D. Roberts}
+\IEEEauthorblockA{\textit{MSc. Computation Intelligence} \\
+	\textit{De Montfort University}\\
+	\textit{Leicester, UK} \\
+	\textit{P17201056@my365.dmu.ac.uk}}
+}
+
 % make the title area
 \maketitle
-\thispagestyle{empty}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \section{Abstract}
 The 8-Queens problem was devised by Max Bezzel in 1848 and consists of a challenge to place 8 Queens on a chess board such that none of the Queens are able to attack another Queen. The more general form of the problem is known as the N-Queens problem where N denotes the dimensions of the board and subsequent count of Queens. The problem is known to be NP-Complete \cite{Complexity}. There have been many different solutions found for the problem, the original solution was provided by Franz Nauck in 1850. It has been used as a benchmark for AI research due in part to it being an Np-Complete problem that is easy to explain to anyone with a basic understanding of Chess. Due to its popularity there have been numerous attempts to resolve the problems using Genetic Algorithms (GA) previously. However, this paper describes a technique that uses the outcomes from lower dimensional evaluations to seed the GA in order to massively improve the performance in searching for solutions in the given dimensions. By reusing previous successful solutions from a lower n-dimensionality it aims to show that there is a close correlation between the results from each dimension and that combinatorial problems like the N-Queens problem can be simplified by applying lower dimensional solutions to higher order problems.
+
+\begin{IEEEkeywords}
+	N-Queens, Genetic Algorithm, Algorithm Optimisation
+\end{IEEEkeywords}
+
 
 \section{Introduction}
 In the game of Chess the Queen is the only piece on the board that is permitted to move any number of spaces horizontally, vertically and diagonally. On a standard 8x8 board it can attack up to 21 different squares in a single move. In 1848 Max Bezzel proposed a puzzle for calculating a configuration whereby 8 Queens can be placed on a board without any two pieces being able to attach each other. This problem, known as the 8-Queens problem, has a more generic variant that imposes the same rules on boards of any topology such that the for N dimensions, there are NxN squares on the board and N Queens to be placed. Since the initial proposition of the puzzle there have been many different approaches to solving it. The first person to successfully find all 92 placements of the original 8x8 board was Pauls \cite{Pauls} in 1874. Work has continued since to resolve the solutions for higher dimensions, currently the maximum dimensions for which all solutions have been proven is 27, for which there are 234,907,967,154,122,528 solutions a result that took over a year of computing time to calculate\cite{27Queens}. This limitation is due to the enormous number of solutions at higher dimensionalitys. The possible combinations of a board layout is $N^{N}$ and so the possible valid permutations grows exponentially as the dimensions are increased. Table 1. lists a selection the number of permutations for the board layout.

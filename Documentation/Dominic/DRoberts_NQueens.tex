@@ -13,7 +13,7 @@
 \usepackage{listings}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-\hypersetup{linkcolor=blue, pdftitle={Solving the NQueens problem with Genetic Algorithms seeded by lower dimension results}, pdfauthor={Dominic Roberts}, pdfsubject={Research Proposal Assignment -- January 2018}, pdfkeywords={software quality, software testing, mutation testing, genetic algorithms} }
+\hypersetup{linkcolor=blue, pdftitle={Solving the NQueens problem with Genetic Algorithms seeded by lower dimension results}, pdfauthor={Dominic Roberts}, pdfsubject={Genetic Algorithmms N-Queens problem -- May 2019}, pdfkeywords={software quality, software testing, mutation testing, genetic algorithms} }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%DOUBLE QUOTE and SINGLE QUOTE Commands%
 \newcommand{\qq}[1]{\textquotedblleft#1\textquotedblright}%
@@ -21,7 +21,7 @@
 \pagenumbering{arabic}%
 %\setcounter{page}{-1}%
 \begin{document}
-\title{\vspace{-2.5cm}Solving the NQueens problem with Genetic Algorithms seeded by lower dimension results}
+\title{\vspace{-1cm}Solving the N-Queens problem with Genetic Algorithms seeded by lower dimension results}
 \author{
 \IEEEauthorblockN{D. Roberts}
 \IEEEauthorblockA{\textit{MSc. Computation Intelligence} \\
@@ -43,9 +43,10 @@ The 8-Queens problem was devised by Max Bezzel in 1848 and consists of a challen
 
 
 \section{Introduction}
-In the game of Chess the Queen is the only piece on the board that is permitted to move any number of spaces horizontally, vertically and diagonally. On a standard 8x8 board it can attack up to 21 different squares in a single move. In 1848 Max Bezzel proposed a puzzle for calculating a configuration whereby 8 Queens can be placed on a board without any two pieces being able to attach each other. This problem, known as the 8-Queens problem, has a more generic variant that imposes the same rules on boards of any topology such that the for N dimensions, there are NxN squares on the board and N Queens to be placed. Since the initial proposition of the puzzle there have been many different approaches to solving it. The first person to successfully find all 92 placements of the original 8x8 board was Pauls \cite{Pauls} in 1874. Work has continued since to resolve the solutions for higher dimensions, currently the maximum dimensions for which all solutions have been proven is 27, for which there are 234,907,967,154,122,528 solutions a result that took over a year of computing time to calculate\cite{27Queens}. This limitation is due to the enormous number of solutions at higher dimensionalitys. The possible combinations of a board layout is $N^{N}$ and so the possible valid permutations grows exponentially as the dimensions are increased. Table 1. lists a selection the number of permutations for the board layout.
+In the game of Chess the Queen is the only piece on the board that is permitted to move any number of spaces horizontally, vertically and diagonally. On a standard 8x8 board it can attack up to 21 different squares in a single move. In 1848 Max Bezzel proposed a puzzle for calculating a configuration whereby 8 Queens can be placed on a board without any two pieces being able to attack each other. This problem, known as the 8-Queens problem, has a more generic variant that imposes the same rules on boards of any topology such that the for N dimensions, there are NxN squares on the board and N Queens to be placed. Since the initial proposition of the puzzle there have been many different approaches to solving it. The first person to successfully find all 92 placements of the original 8x8 board was Pauls \cite{Pauls} in 1874. Work has continued since to resolve the solutions for higher dimensions, currently the maximum dimensions for which all solutions have been proven is 27, for which there are 234,907,967,154,122,528 solutions a result that took over a year of computing time to calculate\cite{27Queens}. This limitation is due to the enormous number of solutions at higher dimensionalities. The possible combinations of a board layout is $N^{N}$ and so the possible valid permutations grows exponentially as the dimensions are increased. Table 1. lists a selection the number of permutations for the board layout.
 
 \begin{table*}[!htbp]
+	\centering
 	\begin{tabular}{|l |l|} 
 		\hline\
 		Dimensions & Combinations \\
@@ -100,7 +101,12 @@ Table 2 gives the number of solutions along with the unique variants at each dim
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=16cm, height=4cm]{NQueensRotations}
+	\includegraphics[width=8cm, height=4cm]{NQueensRotation1}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering	
+	\includegraphics[width=8cm, height=4cm]{NQueensRotation2}
 	\caption{By rotating a configuration through 360 degrees further valid solutions can be derived.}
 \end{figure}
 
@@ -113,7 +119,15 @@ Table 2 gives the number of solutions along with the unique variants at each dim
 The ability to locate potentially an additional 5 solutions from an initial configuration improves the performance of a Search algorithm. Each time a new solution is found analysing each of the transformations can yield multiple valid layouts.
 
 \subsection{Related Works}
+There has been much research in to the N-Queens problem since its creation during the 19th Century, from the early discussions by Pauls \cite{Pauls} right through to the investigations of using Quantum Computers to resolve the puzzle \cite{Quantum}. This recent works by Torggler et al. harnessed the power of a Quantum emulator to solve the excluded diagonals variant of the problem. Their research implemented each Queen as a single atom held in anisotropic optical position. The holding state holds the atom in place to register its presence and in doing so prevents any other atom from being held in the same vertical alignment thus reducing the problem to that of simply resolving the diagonals. 
+An older and far more common implementation is to use back tracking with a brute force algorithm to test possible board permutations to find solutions \cite{Performance}\cite{Backtracking} \cite{Guldal}. The work by Guldal et al uses a backtracking algorithm where partial candidate solutions are abandoned as soon as they are deemed invalid. The algorithm places a queen on the board in the first column and then finds a valid cell in the next column. This process continues until all Queens are placed. The Set part of the algorithm removes the invalid cells from selection prior to evaluation to improve performance.
+If it is unable to find a valid cell it will backtrack through the columns, reinstating the cells that the Set algorithm had eliminated and tries a new position and repeats the process. Their proposed algorithm was shown to be exponentially faster than a back-tracking implementation alone.
 
+An efficient approach to the problem was discussed by Gu et al. \cite{Polynomial} where they reduced the complexity of the search space to N! by defining the Queens locations using a single dimensional array through which the board column is indicated by the array index and board row by the value at the array cell. It is this implementation that inspired the design discussed in this paper. A variant of this approach appears in \cite{ACO} where the Search Space is reorganised in to combinations of available ant movements from one column to another. This architecture isolates each column into a single value permitting only a single movement from one board column to the next, effectively producing a problem more akin to the Travelling Salesman problem.
+
+Genetic Algorithms and more generally Heuristic Algorithms have also been well researched in relation to the problem leading to the puzzle being viewed as a good test bed for the development of new research \cite{Polynomial}. In the work by Martinjak et al. \cite{comparison} the authors compare the results for implementations using the Tabu search, Simulated Annealing and a Genetic Algorithm. They found that Simulated Annealing reduced the complexity of the evaluation function to O(1). The SA implementation consisted of changing two randomly chosen positions on each iteration. Simulated Annealing averaged 492 iterations to find the first solution of 8x8 board. Research into the use of a Genetic Algorithm solution the implementation proposed in the paper used a two-point crossover operation along with a repair mechanism that removes poorer Queens from the solution. The algorithm was able to find a single solution for 2000 dimensions in 1023.845 seconds (approx 17 mins) when using a population size of 400. This performance was bettered by that of the Tabu search implementation although the paper gives less description of how this was achieved. The results for the Tabu search only discuss up to N=500.
+
+An adaptation to the standard GA was proposed in \cite{Adaptive} which enhanced the solution with the addition of a "Bad Population repository" to store the poorly performing chromosomes. The intention was to prevent the reuse of sequences that had already been shown to be weak. However, the Cross over implementation described in this work would appear to introduce duplicate values in the child chromosomes.
 
 \subsection{Applications}
 
@@ -135,7 +149,7 @@ The generation of genome sequences and their subsequent mutations is required to
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=6cm]{SimpleCrossOver}
+	\includegraphics[width=8cm, height=6cm]{SimpleCrossOver}
 	\caption{By only exchanging the locations of items within the same set duplicates can be guaranteed not to occur.}
 \end{figure}
 
@@ -151,7 +165,7 @@ The initial location for each Deme and subsequently the root location for all of
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=6cm]{ImportSequence}
+	\includegraphics[width=8cm, height=6cm]{ImportSequence}
 	\caption{The imported result set from a 7X7 board is used to initiate the search for an 8X8 board.}
 \end{figure}
 
@@ -178,25 +192,25 @@ The statistics in Table 3 indicate that the number of evaluations required for t
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{8QueensAllValues}
+	\includegraphics[width=8cm, height=5cm]{8QueensAllValues}
 	\caption{Comparison of the number of evaluations required to obtain all results for N=8.}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{9QueensAllValues}
+	\includegraphics[width=8cm, height=5cm]{9QueensAllValues}
 		\caption{Comparison of the number of evaluations required to obtain all results for N=9.}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{10QueensAllValues}
+	\includegraphics[width=8cm, height=5cm]{10QueensAllValues}
 		\caption{Comparison of the number of evaluations required to obtain all results for N=10.}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{11QueensAllValues}
+	\includegraphics[width=8cm, height=5cm]{11QueensAllValues}
 		\caption{Comparison of the number of evaluations required to obtain all results for N=11.}
 \end{figure}
 
@@ -227,7 +241,7 @@ The results in Table 4 show the average number of evaluations required to find a
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{EvaluationsFirstSolution}
+	\includegraphics[width=8cm, height=5cm]{EvaluationsFirstSolution}
 	\caption{Comparison of the required evaluations to obtain a first valid sequence for N=21 - 29.}
 \end{figure}
 
@@ -235,13 +249,13 @@ The clear increase in performance for the location of a first solution is in con
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{N10AllEvaluations}
+	\includegraphics[width=8cm, height=5cm]{N10AllEvaluations}
 	\caption{Comparison of the progress of solution identification for N = 10.}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{First200Progress}
+	\includegraphics[width=8cm, height=5cm]{First200Progress}
 	\caption{A closer inspection of the initial progress made in locating solutions for N = 10.}
 \end{figure}
 
@@ -253,13 +267,13 @@ In the work by Thada and Dhaka \cite{Performance} the proposed GA approach requi
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{EvaluationsPerDimension}
+	\includegraphics[width=8cm, height=5cm]{EvaluationsPerDimension}
 	\caption{This figure shows the number of evaluations required to locate a first solution at each dimension.}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering	
-	\includegraphics[width=10cm, height=5cm]{EvaluationProgress}
+	\includegraphics[width=8cm, height=5cm]{EvaluationProgress}
 	\caption{Development of the number of evaluations required to obtain a solution for N = 100.}
 \end{figure}
 
@@ -270,7 +284,7 @@ Currently, the technique described uses the results of N-1 to seed the search al
 
 An alternate area for future enhancements would be to investigate the use of a multi-threaded implementation either through running each Deme asynchronously or multiple values at N simultaneously with a separate thread per dimension with results from lower dimensional threads feeding a result source for higher dimensionalities.
 
-An issue that is apparent from the use of a GA to resolve the NQueens problem is that there is a limitation on the number of results that kept in memory. The GA implementation is inherently a stochastic process which requires a record of previously found locations to be kept to prevent multiple recordings of the same location. As the values for N increases the number of valid results grows exponentially, the known number of results for N = 26 is 22,317,699,616,364,000. Storing this amount of results in a lookup table, to ensure that duplicate results are not recorded, is unachievable. In order to further expand the use of a GA approach to resolving problems of this nature a technique would need to be devised to circumvent this issue. One possibility would be to segment the search space and restrict the GA to one segment at a time such that only the results for that segment need be held at a time.
+An issue that is apparent from the use of a GA to resolve the NQueens problem is that there is a limitation on the number of results that can be kept in memory. The GA implementation is inherently a stochastic process which requires a record of previously found locations to be kept to prevent multiple recordings of the same location. As the values for N increases the number of valid results grows exponentially, the known number of results for N = 26 is 22,317,699,616,364,000. Storing this amount of results in a lookup table, to ensure that duplicate results are not recorded, is unachievable. In order to further expand the use of a GA approach to resolving problems of this nature a technique would need to be devised to circumvent this issue. One possibility would be to segment the search space and restrict the GA to one segment at a time such that only the results for that segment need be held at a time.
 
 \begin{thebibliography}{99.}
 
@@ -307,6 +321,11 @@ An issue that is apparent from the use of a GA to resolve the NQueens problem is
 \bibitem{Polynomial} R. Sosic, J. Gu (1990) A Polynomial Time Algorithm for the N-Queens Problem. SIGART Bulletin, Vol. 1, 3, pp. 7-11
 
 \bibitem{Performance} V. Thada, S. Dhaka (2014) Performance Analysis of N-Queen Problem using Backtracking and Genetic Algorithm Techniques. International journal of Computer Applications Vol 102, No. 7
+
+\bibitem{Backtracking} Chakiat. Abhijith, Sudhakaran. Akhil, A. Abhinav, Venkatesh, Pallavi. (2017). A Novel Double Backtracking Approach to the N-Queens Problem in Three Dimensions. International Journal of Computer Applications. 169. 1-5. 10.5120/ijca2017914749. 
+
+\bibitem{Guldal} S. Güldal, V. Baugh and S. Allehaibi, "N-Queens solving algorithm by sets and backtracking," SoutheastCon 2016, Norfolk, VA, 2016, pp. 1-8.
+doi: 10.1109/SECON.2016.7506688
 
 
 \end{thebibliography}

@@ -33,7 +33,7 @@ import nQueens
 
 
 __author__ = 'David Kind'
-__date__ = '28-03-2019'
+__date__ = '20-04-2019'
 __version__ = '1.0'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 

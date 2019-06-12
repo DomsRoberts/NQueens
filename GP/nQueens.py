@@ -19,7 +19,8 @@
 
 '''
 The n-Queens problem is an age old problem first published by Max Bezzel in 1848
-who first wrote about placing 8 Queens on an 8 x 8 chess board so that none of
+who first wrote about placing 8 Queens on an 8 x 8 chess P1524board so that
+none of
 the Queens were able to attack each other. This problem was later extended to
 n-Queens on an n x n chessboard by Franz Nauck in 1850. While the concept may
 sound simple, the problem is prohibitively computationally expensive as n
@@ -64,8 +65,8 @@ import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
 
 __author__ = 'David Kind'
-__date__ = '17-04-2019'
-__version__ = '1.0'
+__date__ = '20-04-2019'
+__version__ = '1.1'
 __copyright__ = 'http://www.apache.org/licenses/LICENSE-2.0'
 
 #

@@ -2,8 +2,193 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f229926-ded5-4b60-8c1b-da802ea2b79d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/a/aabc2c8724e23ace28d56fa7c171cc0b8781140d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/d/bd7ae67b2367d0e43d8f44748e41b4765bcbe43e" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ActualSolns/results-Magic_8_300_500.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ActualSolns/results-Magic_8_300_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MSE comparison.ods" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PartialSolns/results-Lucky_8_300_5000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PartialSolns/results-Lucky_8_300_5000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PartialSolns/results-Magic_8_300_5000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PartialSolns/results-Magic_8_300_5000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PartialSolns/results-n4QueensAll_8_300_5000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PartialSolns/results-n4QueensAll_8_300_5000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Cube_8_300_200.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Cube_8_300_200.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Fermat_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Fermat_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Fermat_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Fermat_8_300_200.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Lucky_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Lucky_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Lucky_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Lucky_8_300_200.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Magic_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Magic_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Magic_8_300_200.2r.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Magic_8_300_200.2r.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Magic_8_300_200.3r.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Magic_8_300_200.3r.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Natural_8_300_200.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Natural_8_300_200.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Natural_8_300_200.2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Natural_8_300_200.2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Prime_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Prime_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Prime_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Prime_8_300_200.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Semiprime_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Semiprime_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Semiprime_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Semiprime_8_300_200.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Square_8_300_200.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-Square_8_300_200.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensAll_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensAll_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensAll_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensAll_8_300_200.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensFundamental_8_300_200.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensFundamental_8_300_200.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensFundamental_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_200/results-nQueensFundamental_8_300_200.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Cube_8_300_50.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Cube_8_300_50.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Cube_8_300_50.2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Cube_8_300_50.2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Fermat_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Fermat_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Fermat_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Fermat_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Fermat_8_300_50.3r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Fermat_8_300_50.3r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Lucky_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Lucky_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Lucky_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Lucky_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Magic_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Magic_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Magic_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Magic_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Natural_8_300_50.7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Prime_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Prime_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Prime_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Prime_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Semiprime_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Semiprime_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Semiprime_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Semiprime_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Square_8_300_50.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Square_8_300_50.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Square_8_300_50.2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-Square_8_300_50.2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensAll_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensAll_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensAll_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensAll_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensFundamental_8_300_50.1.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensFundamental_8_300_50.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensFundamental_8_300_50.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives1-8_300_50/results-nQueensFundamental_8_300_50.2r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Fermat_8_300_200.1r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Fermat_8_300_200.1r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Lucky_8_300_200.1r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Lucky_8_300_200.1r.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Lucky_8_300_200.2r.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Lucky_8_300_200.2r.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Magic_8_300_200.1r.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Magic_8_300_200.1r.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Magic_8_300_200.2.fail.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primitives2-8_300_200_pi/results-Magic_8_300_200.2.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotgpoutput.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-Cube_8_300_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-Cube_8_300_50.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-n4QueensAll_8_500_20000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-n4QueensAll_8_500_20000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-n4QueensFundamental_8_500_20000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-n4QueensFundamental_8_500_20000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-nQueensAll_8_500_20000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-nQueensAll_8_500_20000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-nQueensFundamental_12_500_20000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-nQueensFundamental_12_500_20000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-nQueensFundamental_8_500_20000.partialsoln.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results-nQueens/results-nQueensFundamental_8_500_20000.partialsoln.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Cube_8_300_100.pbase_pow_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Cube_8_300_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Cube_8_300_50.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Even_8_300_100.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Lucky_8_300_5000.1.fail.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Lucky_8_500_200.4.fail.some_in_seq_correct.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_2000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_2000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_250.1.fail_with_round.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_50.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_500.1.neg_abs.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_500.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_5000.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_5000.genFull.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_5000.half-half.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_5000.mutNodeReplacement.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_5000.mutshrink.awful.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_5000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_900.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Magic_8_300_900.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Natural_8_300_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Natural_8_300_50.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Natural_8_300_500.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Natural_8_300_500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Odd_8_300_100.1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Prime_8_300_300.first_8_terms_correct_only.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Prime_8_500_2.1.failed_but_some_are_correct.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Prime_8_500_200.2.failed.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Prime_8_500_200.3.failed.some_in_seq_correct.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Square_8_300_100.pbase_pow_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Square_8_300_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-Square_8_300_50.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-n4QueensAll_8_300_5000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-n4QueensAll_8_300_5000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-n4QueensFundamental_8_500_200000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-n4QueensFundamental_8_500_200000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-nQueensAll_12_500_20000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/results-nQueensAll_12_500_20000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Fermat_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Fermat_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Lucky_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Lucky_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Magic_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Magic_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Prime_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Prime_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Semiprime_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-Semiprime_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-n4QueensAll_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-n4QueensAll_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-n4QueensAll_8_300_50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-n4QueensAll_8_300_50.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-n4QueensFundamental_8_300_1500.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-n4QueensFundamental_8_300_1500.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-nQueensAll_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-nQueensAll_8_300_15000.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-nQueensFundamental_8_300_15000.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/soln-first8only_then_falls_apart/results-nQueensFundamental_8_300_15000.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nQueens.py" beforeDir="false" afterPath="$PROJECT_DIR$/nQueens.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nQueensSystemTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/nQueensSystemTest.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +201,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nQueens.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="279" selection-start-line="279" selection-end-line="279" />
+            <state relative-caret-position="240">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
             </state>
           </provider>
         </entry>
@@ -26,19 +211,7 @@
         <entry file="file://$PROJECT_DIR$/nQueensSystemTest.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="920">
-              <caret line="54" column="42" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
-              <folding>
-                <element signature="e#667#676#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../deap/deap/gp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
+              <caret line="54" selection-start-line="54" selection-end-line="54" />
             </state>
           </provider>
         </entry>
@@ -92,10 +265,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-4" />
-    <option name="y" value="39" />
-    <option name="width" value="1825" />
-    <option name="height" value="1040" />
+    <option name="x" value="-1924" />
+    <option name="y" value="-4" />
+    <option name="width" value="1928" />
+    <option name="height" value="1088" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -195,7 +368,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1928" height="1060" extended-state="6" />
+    <frame x="-1924" y="-4" width="1928" height="1088" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23538704" />
@@ -223,20 +396,8 @@
     <entry file="file://$PROJECT_DIR$/../dfk-test-examples/gp-intro/symbreg.py" />
     <entry file="file:///media/linuxdrive/work/gunport/theGunPortProblem.py" />
     <entry file="file:///media/linuxdrive/work/CIO_software/resultsparser.py" />
-    <entry file="file://$PROJECT_DIR$/../../../SB_RIO_FW_GenericController/Utilities/Python/template.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1060">
-          <caret line="53" selection-start-line="49" selection-end-line="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../SB_RIO_FW_GenericController/Utilities/Python/register_compiler/excel2code.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="112" selection-start-line="110" selection-end-line="112" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../SB_RIO_FW_GenericController/Utilities/Python/template.py" />
+    <entry file="file://$PROJECT_DIR$/../../../SB_RIO_FW_GenericController/Utilities/Python/register_compiler/excel2code.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/deap/algorithms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1060">
@@ -244,81 +405,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/ant.py">
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/ant.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg_epsilon_lexicase.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg_harm.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg_numpy.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/multiplexer.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/parity.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/spambase.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/adf_symbreg.py" />
+    <entry file="file://$PROJECT_DIR$/../../deap/deap/gp.py" />
+    <entry file="file://$PROJECT_DIR$/log.txt" />
+    <entry file="file://$PROJECT_DIR$/nQueens.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2580" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg_epsilon_lexicase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-867" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg_harm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="673">
-          <caret line="87" selection-start-line="85" selection-end-line="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg_numpy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-867" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/multiplexer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1000">
-          <caret line="62" lean-forward="true" selection-start-line="59" selection-end-line="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/parity.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-780" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/spambase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1200" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/symbreg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-840" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/examples/gp/adf_symbreg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3280">
-          <caret line="173" column="29" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
+        <state relative-caret-position="240">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nQueensSystemTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="920">
-          <caret line="54" column="42" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
-          <folding>
-            <element signature="e#667#676#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../deap/deap/gp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/log.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nQueens.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="279" selection-start-line="279" selection-end-line="279" />
+          <caret line="54" selection-start-line="54" selection-end-line="54" />
         </state>
       </provider>
     </entry>
